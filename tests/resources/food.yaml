@@ -1,0 +1,2118 @@
+mandel_kekse_220716:
+    _type: recipe
+    _servings: 28
+    # 175°, 10min
+    banane:
+        gr: 100
+    mandeln:
+        gr: 66
+    haferflocken:
+        gr: 100
+    honig:
+        gr: 20
+
+# milchprodukte und ei
+milch03:
+    _type: base
+
+    f: 0.3
+    p: 3.6
+    k: 5.1
+
+milch15:
+    _type: base
+
+    f: 1.5
+    p: 3.5
+    k: 5.0
+
+quark:
+  _type: base
+  f: 0.3
+  p: 12.2
+  k: 3.9
+
+quark40:
+  _type: base
+  f: 10.0
+  p: 8.8
+  k: 3.7
+
+joghurt:
+  _type: base
+  f: 1.7
+  p: 3.3
+  k: 14.1
+
+ei:
+  _type: base
+  f: 11.0
+  p: 12.9
+  k: 0.5
+  _serving_size: 60
+
+
+emmentaler_aggenstein:
+    _type: base
+    _serving_size: 17.5
+
+    f: 29.0
+    p: 29.0
+    k:  0.0
+
+camembert:
+    _type: base
+
+    f: 21.0
+    p: 20.0
+    k:  0.5
+
+emmentaler_goldstein:
+    _type: base
+    _serving_size: 25
+
+    f: 29.5
+    p: 30.5
+    k:  0.1
+
+raclette_käse:
+    _type: base
+    _serving_size: 25
+
+    f: 28.0
+    p: 25.5
+    k:  1.0
+
+gouda_gerieben_leicht_ja:
+    _type: base
+    _serving_size: 200
+
+    f: 16.0
+    p: 27.5
+    k:  2.4
+
+
+# fleisch / fisch
+alaska_seelachs_schnitzel:
+  _type: base
+  f: 32.5
+  p: 11.4
+  k:  0.0
+  _serving_size: 25
+
+kochschinken:
+  _type: base
+  f: 3.0
+  p: 19.0
+  k: 0.5
+  _serving_size: 33
+
+schweine_schinken_braten:
+  _type: base
+  f:  3.0
+  p: 20.0
+  k:  1.0
+
+thunfisch:
+  _type: base
+  f: 1.3
+  p: 26.0
+  k: 0.0
+  _serving_size: 150
+
+fischstäbchen:
+  _type: base
+  f: 8.5
+  p: 13.0
+  k: 15.3
+  _serving_size: 30
+
+hamburger_best_tillmans:
+    _type: base
+    _serving_size: 100
+
+    f: 14.0
+    p: 19.6
+    k:  1.0
+
+hamburger_tillmans:
+    _type: base
+    _serving_size: 62.5
+
+    f: 20.0
+    p: 18.0
+    k:  1.0
+
+hackfleisch:
+  _type: base
+  f: 20.0
+  p: 20.0
+  k:  0.0
+
+fischfilet_paniert:
+  _type: base
+  f:  0.5
+  p: 13.8
+  k: 13.0
+  _serving_size: 160
+
+fischfilet_ja:
+    _type: base
+
+    f:  0.6
+    p: 17.0
+    k:  0.0
+    _serving_size: 110
+
+fisch:
+    _type: base
+
+    f:  3.0
+    p: 20.0
+    k:  0.0
+
+forelle_geräuchert:
+    _type: base
+
+    f:  3.6
+    p: 21.8
+    k:  0.0
+
+garnelen_escal:
+    _type: base
+    _serving_size: 225
+
+    f:  0.9
+    p: 12.3
+    k:  0.0
+
+feuerwurst_werst:
+    _type: base
+    _serving_size: 100
+
+    f: 12.3
+    p: 15.3
+    k:  0.3
+
+pute:
+    _type: base
+
+    f: 1.0
+    p: 21.0
+    k: 0.0
+
+brathähnchen:
+    _type: base
+
+    f: 10.0
+    p: 20.0
+    k: 0.0
+
+brathähnchen_knochen:
+    _type: base
+    # 330 / 523 = 0.63
+    # 418 / 603 = 0.69
+    # 375 / 555 = 0.67
+    # 404 / 618 = 0.65
+    # 354 / 545 = 0.65
+    f:  6.3
+    p: 12.6
+    k:  0.0
+
+lamm:
+    _type: base
+
+    f:  3.4
+    p: 20.4
+    k:  0.0
+
+salami:
+    _type: base
+    f: 33.0
+    p: 21.0
+    k:  1.0
+    _serving_size: 5
+
+fleischkäse:
+    _type: base
+    f: 26.0
+    p: 13.0
+    k:  0.5
+
+fleischkäse_pizza:
+    _type: base
+    f: 20.0
+    p: 13.0
+    k:  2.
+
+beef_jerky:
+    _type: base
+    f:  3.0
+    p: 44.0
+    k: 24.0
+    _serving_size: 25
+
+lachsschinken_chambelle:
+    _type: base
+    f:  2.0
+    p: 35.0
+    k:  1.0
+    _serving_size: 16  # 3 scheiben
+
+#gemüse
+kidney_bohnen_ja:
+    _type: base
+    _serving_size: 255
+
+    f: 0.5
+    p: 5.7
+    k: 9.0
+
+chili_bohnen_rewe:
+    _type: base
+    _serving_size: 420
+
+    f:   .8
+    p:  5.
+    k: 11.0
+
+weiße_bohnen_coroos:
+    _type: base
+    _serving_size: 530
+
+    f:   .6
+    p:  6.4
+    k: 11.
+
+mexico_mix_bonduelle:
+    _type: base
+    _serving_size: 280
+
+    f:  1.5
+    p:  3.4
+    k: 11.4
+
+kichererbsen_bohnen_mix_bonduelle:
+    _type: base
+    _serving_size: 250
+
+    f:  1.1
+    p:  7.1
+    k: 14.
+
+pusztasala_rewe:
+    _type: base
+    _serving_size: 190
+
+    f: 0.1
+    p: 0.7
+    k: 6.6
+
+gemüse:
+  _type: base
+  f:  0
+  p:  0
+  k:  0
+
+kartoffel:
+    _type: base
+    f:  0
+    p:  2
+    k: 15.6
+
+tomate_passiert:
+    _type: base
+    f: 0.1
+    p: 1.8
+    k: 3.8
+
+tomate_gehackt:
+    _type: base
+    _serving_size: 400
+
+    f: 0.3
+    p: 1.2
+    k: 3.0
+
+mais_ja:
+    _type: base
+    _serving_size: 285
+
+    f:  2.
+    p:  2.8
+    k: 20.0
+
+erbsen_ja:
+    _type: base
+    f:  0.6
+    p:  4.9
+    k:  9.0
+
+weiße_riesenbohnen_rewe:
+    _type: base
+    _serving_size: 250
+
+    f:  0.8
+    p:  4.4
+    k: 10.8
+
+erbsen_möhren_ja:
+    _type: base
+    _serving_size: 530
+
+    f: 0.2
+    p: 2.3
+    k: 5.7
+
+linsen_suppengrün:
+    _type: base
+    _serving_size: 530
+
+    f:  0.5
+    p:  6.3
+    k: 12.
+
+rotkohl_ja:
+    _type: base
+    _serving_size: 680
+
+    f:  0.1
+    p:  1.1
+    k: 13.9
+
+spinat_gehackt_rewe:
+    _type: base
+    _serving_size: 15
+
+    f: 0.6
+    p: 2.
+    k: 2.
+
+tofu_natur_rewe_bio:
+    _type: base
+    _serving_size: 300
+
+    f:  9.8
+    p: 16.7
+    k:   .6
+
+#Supplements
+vegan_blend:
+    _type: base
+    _serving_size: 30
+
+    # f:  5.5
+    f:  3.0
+    # p: 82.0
+    p: 75.3
+    # k:  4.7
+    k: 12.3
+
+vegan_blend_schoko:
+    _type: base
+    _serving_size: 30
+
+    f:  5
+    p: 70
+    k: 13
+
+whey:
+    _type: base
+    f: 7.3
+    p: 80.0
+    k: 4.9
+    _serving_size: 25
+
+vita_fiber:
+    _type: base
+    f:  0
+    p:  0
+    k: 50
+
+#Nüsse
+mandeln:
+    _type: base
+    f: 50.0
+    p: 21.7
+    k:  9.4
+
+kokosraspeln:
+  _type: base
+  f: 67.5
+  p:  7.1
+  k:  7.9
+
+haselnuss:
+  _type: base
+  f: 64.1
+  p: 17.0
+  k:  5.8
+
+wallnusskerne:
+  _type: base
+  f: 69.1
+  p: 15.5
+  k:  3.7
+  _serving_size: 50
+
+pistazien:
+  _type: base
+  f: 52.0
+  p: 21.0
+  k: 12.0
+  _serving_size: 50
+
+cashew:
+    _type: base
+    _serving_size: 50
+
+    f: 47.0
+    p: 18.8
+    k: 23.1
+
+cashew_mus:
+    _type: base
+
+    f: 43.0
+    p: 21.0
+    k: 31.0
+
+leinsamen:
+    _type: base
+    f: 42.3
+    p: 20.6
+    k: 0.0
+
+sonnenblumenkerne:
+    _type: base
+    f: 49.0
+    p: 23.0
+    k: 12.0
+    _serving_size: 50
+
+nuss_frucht_mischung_ja:
+    _type: base
+    _serving_size: 200
+
+    f: 32.5
+    p: 14.0
+    k: 34.7
+
+#Obst
+banane:
+    _type: base
+    f:  0.2
+    p:  1.2
+    k: 20.0
+
+trauben:
+    _type: base
+    f:  0.3
+    p:  0.7
+    k: 15.6
+    _serving_size: 250
+
+apfel:
+    _type: base
+    f:  0.1
+    p:  0.3
+    k: 11.4
+    _serving_size: 150
+
+ananas:
+    _type: base
+    f:  0.2
+    p:  0.5
+    k: 12.4
+
+fruchtcocktail_harvin:
+    _type: base
+    f:  0
+    p:  0.3
+    k: 14.1
+
+beerenmischung:
+    _type: base
+    f: 0.5
+    p: 1.2
+    k: 6.4
+
+orange:
+    # mandarine, etc
+    _type: base
+    f: 0.1
+    p: 0.9
+    k: 9.3
+
+nektarine:
+    _type: base
+
+    f:   .1
+    p:   .9
+    k: 12.
+
+dattel_getrocknet:
+    _type: base
+    f:  0.6
+    p:  2.0
+    k: 66.0
+
+pflaume_getrocknet:
+    _type: base
+
+    f:  0.6
+    p:  2.3
+    k: 53.0
+
+pflaume:
+    _type: base
+
+    f:  0.2
+    p:  0.6
+    k: 10.0
+
+sauerkirsche:
+    _type: base
+
+    f:  0.5
+    p:  0.9
+    k:  9.9
+
+feige_getrocknet:
+    _type: base
+
+    f:  3.2
+    p:  3.8
+    k: 54.0
+
+ananas_stücke_ja:
+    _type: base
+    f:  0.1
+    p:  0.4
+    k: 16.5
+    _serving_size: 340
+
+pfirsiche_ja:
+    _type: base
+    f:  0.1
+    p:  0.4
+    k: 18.5
+    _serving_size: 470
+
+kokosmilch_rewe:
+    _type: base
+    f: 18.7
+    p:  2.0
+    k:  3.1
+    _serving_size: 400
+
+aprikosen_getrocknet:
+    # geschwefelt
+    _type: base
+
+    f:  0.5
+    p:  2.0
+    k: 55
+
+rhabarber:
+    _type: base
+
+    f:  .1
+    p:  .6
+    k: 1.4
+
+sultaninen:
+    _type: base
+
+    f:  1.8
+    p:  3.3
+    k: 75
+
+mandarin_orangen_ja:
+    _type: base
+    _serving_size: 175
+
+    f:   .3
+    p:   .7
+    k: 15.5
+
+tropischer_fruchtcocktail_rewe:
+    _type: base
+    _serving_size: 250
+
+    f:   .5
+    p:   .5
+    k: 17.
+
+honig:
+    _type: base
+    _serving_size: 10
+
+    f:  0
+    p:  0
+    k: 75
+
+#fertiggerichte
+nudelsuppe:
+  _type: base
+  f: 13.5
+  p:  8.4
+  k: 58.8
+  _serving_size: 59
+
+ravioli_gemüse:
+  _type: base
+  f:  1.4
+  p:  3.0
+  k: 14.0
+  _serving_size: 800
+
+paella_culinea:
+  _type: base
+  f:  2.9
+  p:  5.2
+  k: 13.1
+  _serving_size: 375
+
+pizza_tex_mex:
+  _type: base
+  f:  8.9
+  p:  9.5
+  k: 22.4
+  _serving_size: 350
+
+chili_sin_carne:
+    _type: base
+    f:  0.2
+    p:  6.3
+    k: 10.2
+    _serving_size: 405
+
+#carbs
+sonnenblumenkernbrötchen:
+  _type: base
+  f:  7.0
+  p:  8.8
+  k: 42.1
+  _serving_size: 80
+
+sportlerbrötchen:
+  _type: base
+  f:  4.8
+  p: 12.8
+  k: 38.3
+  _serving_size: 90
+
+knäckebrot:
+  _type: base
+  f:  2.0
+  p:  9.0
+  k: 60.0
+  _serving_size: 13
+
+balance_brot:
+  _type: base
+  f:  9.2
+  p:  9.0
+  k: 34.4
+  _serving_size: 39
+
+balance_brot_lidl:
+    _type: base
+    f:  4.9
+    p:  7.7
+    k: 35.0
+    _serving_size: 56
+
+malz_mehrkornbrot:
+    _type: base
+    f:  2.8
+    p:  7.9
+    k: 39.6
+    _serving_size: 39
+
+nudeln_gekocht:
+  _type: base
+  f:  1
+  p:  6
+  k: 30
+
+schupfnudeln:
+  _type: base
+  f:  0.8
+  p:  3
+  k: 32
+
+rice_white:
+  _type: base
+  f:  0.8
+  p:  6.8
+  k: 78.0
+  _serving_size: 125
+
+rice_cooked:
+  _type: base
+  f:  1.0
+  p:  3.1
+  k: 27.0
+
+rice_brown_cooked:
+  _type: base
+  f:  1.0
+  p:  3.1
+  k: 27.0
+
+mehrkorn_toast_brötchen:
+    _type: base
+    _serving_size: 55
+
+    f:  2.2
+    p:  9.1
+    k: 41.2
+
+zwieback:
+    _type: base
+    _serving_size: 9.4
+
+    f:  6.
+    p: 11
+    k: 74.
+    # vollkorn
+    # f:6 p:14 k:64
+
+butterkecks_vollkorn:
+    _type: base
+    _serving_size: 6.6
+
+    f: 15.
+    p:  8.1
+    k: 64.
+
+weißbrot:
+    _type: base
+
+    f:  1.2
+    p:  7.6
+    k: 49.0
+
+baguette_glutenfrei:
+    _type: base
+
+    f:  8.3
+    p:  1.4
+    k: 58.3
+
+toast_mehrkorn_rewe:
+    # Körner Sandwich Mehrkornbrot
+    # Rewe
+    _type: base
+    _serving_size: 38
+
+    f:  6.8
+    p: 10.5
+    k: 42.
+
+toast_korn_ja:
+    _type: base
+    _serving_size: 25
+
+    f:  3.3
+    p:  9.0
+    k: 43.1
+
+wrap_rewe:
+    _type: base
+    _serving_size: 72
+
+    f:  9.4
+    p:  8.4
+    k: 56.6
+
+tortilla_oldelpaso:
+    _type: base
+    _serving_size: 41
+
+    f:  5.2
+    p:  8.5
+    k: 53.7
+
+haferflocken:
+    _type: base
+
+    f:  7.0
+    p: 13.5
+    k: 58.7
+
+müsli_ja:
+    _type: base
+
+    f:  4.6
+    p:  8.3
+    k: 63.0
+
+semmel_knödel_rewe:
+    _type: base
+    f: 0.4
+    p: 3.5
+    k: 23.3
+    _serving_size: 90
+
+reiswaffel:
+    _type: base
+    f:  3.0
+    p:  7.9
+    k: 80.8
+    _serving_size: 7.7
+
+backpulver:
+    _type: base
+    f:  0.0
+    p:  0.1
+    k: 21.5
+    _serving_size: 15.0
+
+pizza_teig:
+    _type: base
+    f:  1.2
+    p:  7.1
+    k: 33.5
+    _serving_size: 300
+
+milchreis:
+    _type: base
+    _serving_size: 125
+
+    f:  1.1
+    p:  7.1
+    k: 76.1
+
+salzstangen:
+    _type: base
+    _serving_size: 250
+
+    f:  4.4
+    p: 11.
+    k: 71.
+
+# süßigkeiten
+protein_bar_35:
+    _type: base
+    _serving_size: 45
+
+    f: 11
+    p: 40
+    k: 35
+
+energy_11:
+    _type: base
+    _serving_size: 250
+
+    f:  0
+    p:  0
+    k: 11
+
+mini_bussi:
+    _type: base
+    _serving_size: 19
+
+    f: 13
+    p:  7.6
+    k: 53
+
+toffifee:
+    _type: base
+    _serving_size: 8.3
+
+    f: 28.7
+    p:  5.9
+    k: 58.5
+
+hafergebäck_foodeko:
+    _type: base
+    _serving_size: 8
+
+    f: 19.9
+    p:  5.2
+    k: 69.5
+
+haferflockengebäck_foodeko:
+    _type: base
+    _serving_size: 15.4
+
+    f: 30.
+    p:  5.4
+    k: 56.
+
+schokodrops_ruf:
+    _type: base
+    f: 27.1
+    p:  6.5
+    k: 54.0
+
+schokolade:
+    _type: base
+    f: 35.0
+    p:  5.0
+    k: 50.0
+    _serving_size: 50
+
+spekulatius:
+    _type: base
+    f: 18.7
+    p:  6.0
+    k: 70.0
+    _serving_size: 9
+
+spekulatius_mandel:
+    _type: base
+    _serving_size: 9
+
+    f: 23.0
+    p:  6.8
+    k: 65.0
+
+hobbits_kernig:
+    _type: base
+    _serving_size: 12
+
+    f: 20.0
+    p:  8.2
+    k: 62.0
+
+viba_nougat:
+    _type: base
+    f: 36.5
+    p:  7.4
+    k: 50.9
+
+kakao:
+    _type: base
+    f: 20.7
+    p: 19.8
+    k:  8.8
+
+vanillinzucker:
+    _type: base
+    f:  0.1
+    p:  0.1
+    k: 99.6
+    _serving_size: 8
+
+früchtebrot:
+    _type: base
+
+    f: 11.8
+    p: 6.6
+    k: 52.9
+
+mini_zitronenkuchen:
+    _type: base
+
+    f: 21
+    p:  2.2
+    k: 56
+    _serving_size: 37
+
+gebäck_gemischt:
+    _type: base
+
+    f: 23
+    p:  4
+    k: 60
+
+mini_schoko_reis:
+    _type: base
+    _serving_size: 18
+
+    f: 30
+    p:  5.9
+    k: 61
+
+belvita_keks:
+    _type: base
+    _serving_size: 12.5
+
+    f: 14.5
+    p:  8
+    k: 67
+
+##
+# alcohol converted to carbs
+bier:
+    _type: base
+    f: 0.0
+    p: 0.0
+    k: 10.0
+
+glühwein:
+    _type: base
+    f: 0.0
+    p: 0.0
+    k: 22.0
+    _serving_size: 200
+
+caipirinha:
+    _type: base
+
+    f: 0.0
+    p: 0.0
+    k: 27.0
+
+##
+
+gewürzmischung:
+    # maggi, knorr
+    _type: base
+    _serving_size: 35
+
+    f:  3
+    p:  5
+    k: 66
+
+pommes_frites:
+    _type: base
+
+    f: 14.5
+    p:  3.7
+    k: 36.6
+
+kroketten:
+    _type: base
+
+    f:  8.
+    p:  2.5
+    k: 24.5
+
+butter:
+    _type: base
+
+    f: 83.3
+    p:  0.0
+    k:  0.0
+
+mehl405:
+    _type: base
+
+    f:  1.0
+    p: 10.0
+    k: 71.0
+
+dinkel_mehl:
+    _type: base
+
+    f:  1.3
+    p: 12.4
+    k: 68.9
+
+senf:
+  _type: base
+  f:  0
+  p:  0
+  k:  0
+
+leinöl:
+  _type: base
+  f: 92
+  p:  0
+  k:  0
+
+erbsen:
+  _type: base
+  f: 0.3
+  p: 4.8
+  k: 9.0
+
+kochöl:
+    # sonnenblumen- oder rapsöl
+    _type: base
+    f: 92
+    p:  0
+    k:  0
+
+gelatine_fix:
+    _type: base
+    _serving_size: 15
+
+    f:  0
+    p: 31.0
+    k:  6.1
+
+wasser:
+    _type: base
+    f: 0
+    p: 0
+    k: 0
+
+#
+# R E C I P E S
+#
+
+paella:
+  _type: recipe
+
+  erbsen:
+    gr: 140
+  rice_white:
+  fischfilet_ja:
+    servings: 3
+  garnelen_escal:
+    servings: 0.5
+
+Knödel_150927:
+  _type: recipe
+  _servings: 13
+
+  weißbrot:
+    gr: 300
+  ei:
+    servings: 2
+  milch03:
+    gr: 250
+
+Milchreis_151211:
+    _type: recipe
+    _servings: 5
+
+    milchreis:
+    kokosmilch_rewe:
+    ananas_stücke_ja:
+    vanillinzucker:
+
+kekse_160125:
+    _type: recipe
+    _servings: 19
+
+    apfel:
+        gr: 65
+    beerenmischung:
+        gr: 33
+    vegan_blend:
+        gr: 26
+    kakao:
+        gr: 15
+    vita_fiber:
+        gr: 74
+    haferflocken:
+        gr: 50
+    dinkel_mehl:
+        gr: 20
+
+kekse_160124:
+    _type: recipe
+
+    apfel:
+        gr: 83
+    beerenmischung:
+        gr: 42
+    vegan_blend:
+        gr: 33
+    kakao:
+        gr: 10
+    vita_fiber:
+        gr: 94
+
+kekse_151201:
+    _type: recipe
+
+    apfel:
+        gr: 170
+    wasser:
+        gr: 100
+    mehl405:
+        gr: 80
+    mandeln:
+        gr: 50
+    backpulver:
+    haferflocken:
+        gr: 50
+    vegan_blend:
+
+kekse_151114:
+    _type: recipe
+    ei:
+    mehl405:
+        gr: 50
+    vegan_blend:
+        gr: 15
+    milch03:
+        gr: 100
+    mandeln:
+        gr: 55
+    # 25g gemahlen, 30g geblendered
+    haselnuss:
+        gr: 30
+    # geblendered
+    kokosraspeln:
+        gr: 20
+    # flavDrops: 27 Erdbeer
+    haferflocken:
+        gr: 25
+
+kekse_150906:
+  _type: recipe
+  _servings: 24
+
+  banane:
+    gr: 100
+  kokosraspeln:
+    gr: 25
+  haferflocken:
+    gr: 25
+  whey:
+    servings: 1
+  mandeln:
+    gr: 30
+  haselnuss:
+    gr: 15
+  apfel:
+    servings: 1
+
+kekse_150825:
+  _type: recipe
+  _servings: 9
+
+  banane:
+    gr: 140
+  mandeln:
+    gr: 40
+  haselnuss:
+    gr: 30
+  kokosraspeln:
+    gr: 10
+  haferflocken:
+    gr: 50
+  schokodrops_ruf:
+    gr: 15
+
+Apfeltarte:
+  _type: recipe
+  _servings: 8
+
+  quark40:
+    gr: 250
+  mehl405:
+    gr: 150
+  mandeln:
+    gr: 150
+  ei:
+    servings: 1
+  apfel:
+    gr: 1000
+
+Hamburger:
+  _type: recipe
+  mehrkorn_toast_brötchen:
+    servings: 1
+  hamburger_tillmans:
+    servings: 1
+
+Bohnentopf:
+  _type: recipe
+  kidney_bohnen_ja:
+    servings: 1
+  mexico_mix_bonduelle:
+    servings: 1
+  rice_white:
+    servings: 1
+
+SchinkenBrot:
+  _type: recipe
+  balance_brot:
+    servings: 1
+  kochschinken:
+    servings: 1
+
+FischfiletRice:
+  _type: recipe
+  fischfilet_paniert:
+    servings: 2
+  rice_white:
+    servings: 1
+
+FischfiletRice2:
+  _type: recipe
+  fischfilet_ja:
+    servings: 3
+  rice_white:
+    servings: 1
+
+Quark:
+  _type: recipe
+  _servings: 6
+  milch03:
+    gr: 200
+  quark:
+    gr: 1000
+  joghurt:
+    gr: 250
+  leinsamen:
+    gr: 50
+
+Quark/woSamen:
+  _type: recipe
+  _servings: 6
+  milch03:
+    gr: 200
+  quark:
+    gr: 1000
+  joghurt:
+    gr: 250
+
+QuarkEi:
+    _type: recipe
+    _servings: 6
+
+    milch03:
+        gr: 200
+    quark:
+        gr: 1000
+    leinöl:
+        gr: 25
+    ei:
+        servings: 2
+    beerenmischung:
+        gr: 100
+
+Quark/woSamenJoghurt:
+  _type: recipe
+  _servings: 6
+  milch03:
+    gr: 200
+  quark:
+    gr: 1000
+
+QuarkLeinöl/woSamenJoghurt:
+  _type: recipe
+  _servings: 6
+  milch03:
+    gr: 200
+  quark:
+    gr: 1000
+  leinöl:
+    gr: 50
+
+Quark40:
+  _type: recipe
+  _servings: 6
+  milch03:
+    gr: 200
+  quark40:
+    gr: 1000
+  joghurt:
+    gr: 250
+  leinsamen:
+    gr: 50
+
+Quark40whey:
+  _type: recipe
+  _servings: 6
+  milch03:
+    gr: 200
+  quark40:
+    gr: 1000
+  joghurt:
+    gr: 250
+  whey:
+    servings: 3
+
+QuarkLeinöl:
+  _type: recipe
+  _servings: 6
+  milch03:
+    gr: 200
+  quark:
+    gr: 1000
+  joghurt:
+    gr: 250
+  leinsamen:
+    gr: 50
+  leinöl:
+    gr: 25
+
+QuarkLeinöl50:
+    _type: recipe
+    _servings: 6
+
+    milch03:
+        gr: 200
+    quark:
+        gr: 1000
+    joghurt:
+        gr: 250
+    leinsamen:
+        gr: 50
+    leinöl:
+        gr: 50
+
+QuarkLeinöl50/woSamen:
+    _type: recipe
+    _servings: 6
+
+    milch03:
+        gr: 200
+    quark:
+        gr: 1000
+    joghurt:
+        gr: 250
+    leinöl:
+        gr: 50
+
+ProteinShake:
+    _type: recipe
+
+    milch03:
+        gr: 200
+    whey:
+        servings: 1
+
+VeganShake:
+    _type: recipe
+
+    milch03:
+        gr: 200
+    vegan_blend:
+        servings: 1
+
+VeganShake_schoko:
+    _type: recipe
+
+    milch15:
+        gr: 200
+    vegan_blend_schoko:
+        servings: 1
+
+Eier:
+    _type: recipe
+
+    ei:
+        servings: 3
+    kochschinken:
+        servings: 2
+    haferflocken:
+        gr: 50
+    thunfisch:
+        servings: 1
+
+Eier25:
+    _type: recipe
+
+    ei:
+        servings: 3
+    kochschinken:
+        servings: 2
+    haferflocken:
+        gr: 25
+    thunfisch:
+        servings: 1
+
+KartoffelPizza:
+    _type: recipe
+    _servings: 81
+
+    kartoffel:
+        gr: 3000
+    butter:
+        gr: 200
+    mehl405:
+        gr: 700
+    milch03:
+        gr: 100
+    tomate_passiert:
+        gr: 500
+    kochschinken:
+        gr: 200
+    salami:
+        gr: 200
+    emmentaler_goldstein:
+        gr: 500
+    # serving_size: 67
+
+ThunfischBurger:
+    _type: recipe
+
+    thunfisch:
+        servings: 2
+    ei:
+        servings: 1
+    haferflocken:
+        gr: 50
+    senf:
+        servings: 1
+    gemüse:
+        gr: 75
+    # Wasser besser aus dem Thunfisch pressen
+
+kartoffelbrei:
+    _type: base
+
+    f:  3.2
+    p:  1.9
+    k: 14.1
+
+kaiserschmarn:
+    _type: recipe
+
+    ei:
+        servings: 6
+    mehl405:
+        gr: 500
+    milch03:
+        gr: 250
+    butter:
+        gr: 120
+    #quark40:
+    #    gr: 250
+
+Bratkartoffeln:
+    _type: recipe
+
+    kartoffel:
+        gr: 100
+    kochöl:
+        gr: 5
+
+frikadellen:
+    _type: recipe
+    _servings: 1.66
+
+    hackfleisch:
+        gr: 75
+    gemüse:
+        gr: 25
+    kochöl:
+        gr: 5
+    # öl -> 5 gr auf 100
+    # serving_size: 60
+
+Kokosnusskuchen_weißeBohnen:
+    _type: recipe
+    _servings: 8
+
+    weiße_riesenbohnen_rewe:
+        servings: 1
+    ei:
+        servings: 3
+    kokosraspeln:
+        gr: 100
+    backpulver:
+        servings: 1
+    milch03:
+        gr: 100
+    vanillinzucker:
+        servings: 1
+    #flavdrops: 12
+    #spritzer zitrone
+
+Putenschnitzel:
+    # _type: recipe
+    _type: base
+
+    f:  7.8
+    p: 20.
+    k: 12.7
+
+    # pute:
+    #    gr: 1050
+    # kochöl:
+    #    gr: 150
+    # haferflocken:
+    #    gr: 85
+    # mehl405:
+    #    gr: 85
+    # weißbrot:
+    #    gr: 120
+    # ei:
+    #    gr: 100
+
+Fruchtgelee:
+    _type: recipe
+
+    gelatine_fix:
+    beerenmischung:
+        gr: 250
+
+Orangengelee:
+    _type: recipe
+
+    gelatine_fix:
+        servings: 2
+    orange:
+        gr: 250
+
+Orangensaft:
+    _type: recipe
+
+    orange:
+
+Pizza_selbst:
+    _type: recipe
+
+    gouda_gerieben_leicht_ja:
+    pizza_teig:
+    thunfisch:
+    kochschinken:
+        servings: 2
+    salami:
+        servings: 5
+
+Milchreis_kokos:
+    _type: recipe
+    _preparation:
+        Milch und Zucker, Zimt, etc. aufkochen.
+
+        Milchreis bei mäßiger Hitze 20 Minuten unter häufigen Rühren langsam kochen lassen.
+
+        Anschließend ohne Hitze bei geschlossenem Deckel 10 Minuten stehen lassen.
+
+    milchreis:
+    kokosmilch_rewe:
+
+nelken:
+    # getrocknet
+    _type: base
+
+    f: 20.1
+    p:  6
+    k: 61.2
+
+zimt:
+    # pulver
+    _type: base
+
+    f:  3.2
+    p:  3.9
+    k: 56
+
+salz:
+    _type: base
+
+    f: 0
+    p: 0
+    k: 0
+
+zucker:
+    _type: base
+
+    f:  0
+    p:  0
+    k: 99.8
+
+marmelade:
+    _type: base
+
+    f:  0
+    p:  0.1
+    k: 69
+
+muskatblüte:
+    _type: base
+
+    f: 36.3
+    p:  5.8
+    k: 49.3
+
+kokosfett:
+    _type: base
+    _serving_size: 25
+
+    f: 100
+    p:   0
+    k:   0
+
+schmand:
+    _type: base
+    _serving_size: 200
+
+    f: 24
+    p:  3.2
+    k:  4
+
+wasser:
+    _type: base
+
+    f: 0
+    p: 0
+    k: 0
+
+
+
+rice_Risotto:
+    _type: recipe
+
+    rice_white:
+        gr: 500
+    wasser:
+        gr: 1390
+
+Quarkkuchen_160708:
+    _type: recipe
+    _servings: 4
+
+    dinkel_mehl:
+        gr: 200
+    haferflocken:
+        gr: 100
+    kokosfett:
+        gr: 25
+
+    ei:
+        servings: 4
+    vanillinzucker:
+
+    quark:
+        gr: 1000
+
+    beerenmischung:
+        gr: 300
+
+Quarkkuchen_160624:
+    _type: recipe
+    _servings: 4
+
+    dinkel_mehl:
+        gr: 200
+    haferflocken:
+        gr: 100
+    kokosfett:
+        gr: 25
+
+    ei:
+        servings: 4
+    vanillinzucker:
+
+    quark:
+        gr: 1000
+
+    beerenmischung:
+        gr: 300
+
+Quarkkuchen_160619:
+    _type: recipe
+    _servings: 4
+
+    dinkel_mehl:
+        gr: 200
+    haferflocken:
+        gr: 100
+    kokosfett:
+        gr: 25
+
+    ei:
+        servings: 4
+    vanillinzucker:
+
+    quark:
+        gr: 1000
+
+    banane:
+        servings: 3
+    kakao:
+        gr: 20
+
+Quarkkuchen_160611:
+    _type: recipe
+    _servings: 4
+
+    dinkel_mehl:
+        gr: 200
+    mehl405:
+        gr: 100
+    haferflocken:
+        gr: 100
+    schmand:
+
+    ei:
+        servings: 4
+    vanillinzucker:
+
+    quark:
+        gr: 1000
+    tropischer_fruchtcocktail_rewe:
+    mandarin_orangen_ja:
+
+Rhabarberkuchen_160526:
+    _type: recipe
+    _servings: 4
+
+    dinkel_mehl:
+        gr: 300
+    butter:
+        gr: 25
+    ei:
+        servings: 4
+    vita_fiber:
+        gr: 50
+    vanillinzucker:
+
+    quark:
+        gr: 1000
+    rhabarber:
+        gr: 700
+
+Rhabarberkuchen:
+    _type: recipe
+    _servings: 4
+
+    dinkel_mehl:
+        gr: 400
+    butter:
+        gr: 50
+    ei:
+        servings: 6
+    vita_fiber:
+        gr: 50
+    vanillinzucker:
+
+    quark:
+        gr: 1000
+    rhabarber:
+        gr: 450
+
+Linzertorte_old:
+    _type: recipe
+    _servings: 8
+
+    mehl405:
+        gr: 200
+    zucker:
+        gr: 125
+    ei:
+        servings: 2
+    backpulver:
+    nelken:
+        gr: 1
+    #    messerspitze: 1
+    muskatblüte:
+        gr: 1
+    #    messerspitze: 1
+    zimt:
+        gr: 5
+    #    teelöffel: 1
+    salz:
+        gr: 0.5
+    #    prise: 1
+    # abgeriebene schale einer halben zitrone
+    haselnuss:
+        gr: 125
+    butter:
+        gr: 150
+    marmelade:
+        gr: 200
+#
+#     mehl mit backpulver mischen und auf ein backbrett sieben. Vertiefung eindrücken, Zucker, Ei und Gewürze zugeben, und mit einem Teil des Mehls verrühren. Die in Stücke geschnittene Butter und die Haselnüsse dazugeben. Alles zu einem geschmeidigen Teig kneten. 30-40 Minuten ruhen lassen. Mit der Hälfte des Teigs den Boden belegen, und mit Marmelade bestreichen. Restlichen Teig gitterförmig über den Boden. Mit Eigelb bestreichen. Bei 200°C ca. 25-30 Minuten backen.
+
+Linzertorte:
+    # kokosfett vorher verlaufen lassen
+    # weniger flüssigkeit
+    _type: recipe
+    _servings: 8
+
+    mehl405:
+        gr: 100
+    #    gr: 200
+    haferflocken:
+        gr: 50
+
+    mandeln:
+        gr: 100
+    # zucker:
+    #    gr: 125
+    ei:
+        servings: 2
+    backpulver:
+
+    haselnuss:
+        gr: 100
+    #    gr: 125
+    # butter:
+    #    gr: 150
+    kokosfett:
+    quark40:
+        gr: 250
+    # marmelade:
+    #    gr: 200
+    gelatine_fix:
+    beerenmischung:
+        gr: 200
+
+    nelken:
+        gr: 1
+    #    messerspitze: 1
+    muskatblüte:
+        gr: 1
+    #    messerspitze: 1
+    zimt:
+        gr: 5
+    #    teelöffel: 1
+    salz:
+        gr: 0.5
+    #    prise: 1
+    # abgeriebene schale einer halben zitrone
+
+Linzertorte_160110:
+    # weniger flüssigkeit
+    _type: recipe
+    _servings: 8
+
+    dinkel_mehl:
+        gr: 200
+    vita_fiber:
+        gr: 50
+
+    mandeln:
+        gr: 50
+    vanillinzucker:
+    # zucker:
+    #    gr: 125
+    ei:
+        servings: 2
+    backpulver:
+
+    haselnuss:
+        gr: 100
+    #    gr: 125
+    # butter:
+    #    gr: 150
+    quark40:
+        gr: 250
+    # marmelade:
+    #    gr: 200
+    gelatine_fix:
+    beerenmischung:
+        gr: 200
+
+    nelken:
+        gr: 1
+    #    messerspitze: 1
+    muskatblüte:
+        gr: 1
+    #    messerspitze: 1
+    zimt:
+        gr: 5
+    #    teelöffel: 1
+    salz:
+        gr: 0.5
+    #    prise: 1
+    # abgeriebene schale einer halben zitrone
+
+    kakao:
+        gr: 15
+
+Kaba:
+    _type: recipe
+
+    milch03:
+        gr: 150
+    kakao:
+        gr: 10
+
+Apfelbrot_20160308:
+    _type: recipe
+    _servings: 10
+
+    apfel:
+        gr: 250
+
+    vita_fiber:
+        gr: 25
+    sultaninen:
+        gr: 250
+    dinkel_mehl:
+        gr: 125
+    backpulver:
+
+    zimt:
+        gr: 5
+    nelken:
+        gr: 3
+    # lebkuchengewürz:
+    #   gr: 10
+    #   teelöffel
+    ei:
+
+    haselnuss:
+        gr: 25
+    mandeln:
+        gr: 50
+    kokosraspeln:
+        gr: 25
+
+Apfelbrot:
+    _type: recipe
+    _servings: 10
+
+    _preperation:
+        Tag 1 Äpfel mit Schale grob raspeln. Zusammen mit "Zucker" und Rosinen/Sultaninen in eine Schüssel geben.
+        Tag 2 Mehl, Backpulver, Gewürze, Trockenfrüchte und Nüsse gut durchmischen, kleine Brote formen und mit Ei bestreichen.
+        Ober/Unterhitze, 170°C 45-50 Minuten
+
+    apfel:
+        gr: 500
+    # brauner Zucker
+    #   gr: 100
+    # rum_aroma:
+    #   2 esslöffel
+
+    vita_fiber:
+        gr: 50
+    sultaninen:
+        gr: 250
+    dinkel_mehl:
+        gr: 250
+    backpulver:
+    zimt:
+        gr: 5
+        # 0.5 teelöffel
+    nelken:
+        # messerspitze
+        gr: 3
+    # lebkuchengewürz:
+    #   gr: 10
+    #   teelöffel
+    ei:
+
+    mandeln:
+        gr: 100
+    wallnusskerne:
+       gr: 50
+
+Apfelbrot_schoko:
+    _type: recipe
+    _servings: 20
+
+    _preperation:
+        Tag 1 Äpfel mit Schale grob raspeln. Zusammen mit "Zucker" und Rosinen/Sultaninen in eine Schüssel geben.
+        Tag 2 Mehl, Backpulver, Gewürze, Trockenfrüchte und Nüsse gut durchmischen, kleine Brote formen und mit Ei bestreichen.
+        Ober/Unterhitze, 170°C 45-50 Minuten
+
+    apfel:
+        gr: 500
+
+    vita_fiber:
+        gr: 100
+    schokolade:
+        gr: 50
+    beerenmischung:
+        gr: 300
+
+    dinkel_mehl:
+        gr: 225
+    kakao:
+        gr: 50
+
+    backpulver:
+    zimt:
+        gr: 5
+        # 0.5 teelöffel
+    nelken:
+        # messerspitze
+        gr: 3
+    # lebkuchengewürz:
+    #   gr: 10
+    #   teelöffel
+    ei:
+
+    mandeln:
+        gr: 100
+    wallnusskerne:
+       gr: 50

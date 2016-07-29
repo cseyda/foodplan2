@@ -1,0 +1,267 @@
+20160723:
+    weight: 74.5
+    bodyfat: 20
+    tdee_adjust: -5
+
+20160716:
+    weight: 72.6
+    bodyfat: 20
+    tdee_adjust: -5
+
+20160709:
+    weight: 73.6
+    bodyfat: 20
+    tdee_adjust: -5
+
+20160702:
+    weight: 72.9
+    bodyfat: 20
+    tdee_adjust: -5
+
+20160625:
+    weight: 72.4
+    bodyfat: 20
+    tdee_adjust: -5
+
+20160618:
+    weight: 73.
+    bodyfat: 20
+    tdee_adjust: -5
+
+20160611:
+    weight: 73.5
+    bodyfat: 20
+    tdee_adjust: 0
+
+20160604:
+    weight: 71.8
+    bodyfat: 22.4
+    tdee_adjust: 0
+
+20160528:
+    weight: 71.
+    bodyfat: 22.
+    tdee_adjust: 0
+
+20160521:
+    weight: 71.5
+    bodyfat: 22.3
+    tdee_adjust: 0
+
+20160514:
+    weight: 71.2
+    bodyfat: 22.1
+    tdee_adjust: 0
+
+20160507:
+    weight: 71.5
+    bodyfat: 22.3
+    tdee_adjust: 0
+
+20160430:
+    weight: 71.3
+    bodyfat: 22.1
+    tdee_adjust: 0
+
+20160423:
+    weight: 70.4
+    bodyfat: 21.7
+    tdee_adjust: 0
+
+20160416:
+    weight: 69.9
+    bodyfat: 21.4
+    tdee_adjust: 0
+
+20160409:
+    weight: 69.4
+    bodyfat: 21.1
+    tdee_adjust: 0
+
+20160402:
+    weight: 71.
+    bodyfat: 22.
+    tdee_adjust: 0
+
+20160326:
+    weight: 69.9
+    bodyfat: 21.4
+    tdee_adjust: 0
+    #krank
+
+20160321:
+    weight: 69.9
+    bodyfat: 21.4
+    tdee_adjust: -10
+    #krank
+
+20160319:
+    weight: 70.5
+    bodyfat: 21.7
+    tdee_adjust: -10
+    # Ab, Leg, Shoulder
+    # 8, 8, 6
+
+20160312:
+    weight: 71.2
+    bodyfat: 22.1
+    tdee_adjust: -10
+    # Ab, Leg, Shoulder
+    # 9, 8, 5
+
+20160305:
+    weight: 70.5
+    bodyfat: 21.7
+    tdee_adjust: -10
+    # Ab, Leg, Shoulder
+    # 8, 7, 8
+
+20160227:
+    weight: 70.
+    bodyfat: 21.4
+    tdee_adjust: -10
+
+20160220:
+    weight: 70.7
+    bodyfat: 21.8
+    tdee_adjust: -15
+
+20160213:
+    weight: 70.7
+    bodyfat: 21.8
+    tdee_adjust: -15
+
+20160206:
+    weight: 69.7
+    bodyfat: 21.3
+    tdee_adjust: -15
+
+20160130:
+    weight: 70.3
+    bodyfat: 21.6
+    tdee_adjust: -15
+
+20160123:
+    weight: 70.5
+    bodyfat: 21.8
+    tdee_adjust: -15
+
+20160116:
+    weight: 70.8
+    bodyfat: 21.9
+    tdee_adjust: -15
+
+20160109:
+    weight: 71.6
+    bodyfat: 22.3
+    tdee_adjust: -15
+
+20160103:
+    weight: 72.4
+    bodyfat: 22.7
+    tdee_adjust: -15
+
+20151231:
+    weight: 72.9
+    bodyfat: 22.9
+    tdee_adjust: -10
+
+20151223:
+    weight: 72.3
+    bodyfat: 22.7
+    tdee_adjust: -10
+
+20151219:
+    weight: 72.8
+    bodyfat: 22.9
+    tdee_adjust: -20
+
+20151212:
+    weight: 73.8
+    bodyfat: 23.5
+    tdee_adjust: -20
+
+20151205:
+    weight: 75.1
+    bodyfat: 24.1
+    tdee_adjust: -20
+
+20151128:
+    weight: 74.6
+    bodyfat: 23.9
+    tdee_adjust: -20
+
+20151122:
+    weight: 75.6
+    bodyfat: 24.3
+    tdee_adjust: -20
+
+20151115:
+    weight: 76.4
+    bodyfat: 24.7
+    tdee_adjust: -20
+
+20151108:
+    weight: 76.9
+    bodyfat: 24.9
+    tdee_adjust: -20
+
+20151101:
+    weight: 76.7
+    bodyfat: 24.9
+    tdee_adjust: -20
+
+20151025:
+    weight: 77.5
+    bodyfat: 25.2
+    tdee_adjust: -20
+
+20151018:
+    weight: 78.2
+    bodyfat: 25.6
+    tdee_adjust: -20
+
+20151011:
+    weight: 79.2
+    bodyfat: 26.0
+    tdee_adjust: -20
+
+20151004:
+    weight: 79.9
+    bodyfat: 26.3
+    tdee_adjust: -20
+
+20150927:
+    weight: 81.2
+    bodyfat: 26.9
+    tdee_adjust: -20
+
+20150920:
+    weight: 81.0
+    bodyfat: 26.8
+    tdee_adjust: -20
+
+20150913:
+    weight: 81.8
+    bodyfat: 27.1
+    tdee_adjust: -20
+
+20150906:
+    weight: 83.2
+    bodyfat: 27.7
+    tdee_adjust: -20
+
+20150830:
+    weight: 82.6
+    bodyfat: 27.4
+    tdee_adjust: -20
+
+20150823:
+    weight: 83.8
+    bodyfat: 27.9
+    tdee_adjust: -20
+
+20150816:
+    weight: 85.7
+    bodyfat: 28.6
+    tdee_adjust: -20
