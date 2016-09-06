@@ -187,36 +187,60 @@ def pickled_load_food(food_path: Path, crc_path: Path, pickle_path: Path) -> dic
     return pickled_object
 
 # CONSUMED
+def _parse_consumed_entry(eaten, serving, food):
+    """."""
+    # if temp food, there is no entry in db
+    # copy later if there is no temp food found
+    m = None
+    meal_serving = Serving(1, "servings")
+
+    if serving:
+        for serving_kind, serving_size in serving.items():
+            # temp food, not in db
+            if serving_kind == "macros":
+                m = Macro(
+                    f=serving_size.get("f", 0),
+                    p=serving_size.get("p", 0),
+                    k=serving_size.get("k", 0),
+                    a=serving_size.get("a", 0))
+            else:
+                meal_serving = Serving(serving_size, serving_kind)
+    if not m:
+        m = copy.copy(food[eaten])
+
+    m.set_serving(meal_serving)
+    return m
+
+def _parse_consumed_entries(food_with_servings, food):
+    """."""
+    r = Macro(serving_size=0)
+
+    for eaten, serving in food_with_servings:
+        m = _parse_consumed_entry(eaten, serving, food)
+        r += m
+    return r
 
 def _parse_consumed(consumed_yaml: dict, food: dict):
-    """."""
+    """Parse yaml data of food entries and return dict with the macros."""
     # sort consumed_yaml, get days to do
     days = sorted((day for day in consumed_yaml), reverse=True)
     days_kcals = {}
 
     for day in days:
-        r = Macro(serving_size=0)
-        for eaten, serving in consumed_yaml[day].items():
-            # in case there are temporary foods
-            m = None
-            meal_serving = Serving(1, "servings")
+        # FIXME: convert older file format
+        # old:
+        try:
+            r = _parse_consumed_entries(consumed_yaml[day].items(), food)
+            days_kcals[day] = r
+        # new:
+        except:
+            r = Macro(serving_size=0)
 
-            if serving:
-                for serving_kind, serving_size in serving.items():
-                    if serving_kind == "macros":
-                        m = Macro(
-                            f=serving_size.get("f", 0),
-                            p=serving_size.get("p", 0),
-                            k=serving_size.get("k", 0),
-                            a=serving_size.get("a", 0))
-                    else:
-                        meal_serving = Serving(serving_size, serving_kind)
-            if not m:
-                m = copy.copy(food[eaten])
-
-            m.set_serving(meal_serving)
-            r = r + m
-        days_kcals[day] = r
+            for times in consumed_yaml[day]:
+                for time, items in times.items():
+                    if items:
+                        r += _parse_consumed_entries(items.items(), food)
+            days_kcals[day] = r
     return days_kcals
 
 def get_consumed_from_file(consumed_path: Path, food: dict) -> dict:
@@ -238,30 +262,15 @@ def pickled_load_consumed(
 
     return pickled_object
 
-# def load_consumed(consumed_path: Path, food: dict) -> dict:
-#     """."""
-#     crc_path = Path("tests/resources/crc.pickle")
-#     pickle_path = Path("tests/resources/consumed.pickle")
-#
-#     consumed = None
-#     with _Crc(crc_path, consumed_path) as crc_match:
-#         if crc_match:
-#             with pickle_path.open('rb') as f:
-#                 consumed = pickle.load(f)
-#
-#         else:
-#             consumed = get_consumed_from_file(consumed_path, food)
-#
-#             with pickle_path.open('wb') as f:
-#                 pickle.dump(consumed, f, pickle.HIGHEST_PROTOCOL)
-#
-#     return consumed
 
+def calc_tdee(weight, bodyfat, activity_level, tdee_adjust):
+    """Calculate TDEE and surrounding numbers.
 
-def _calc_tdee(measures):
-    """."""
-    w = measures["weight"]
-    f = measures["bodyfat"]
+    LBM, BMR, aTDEE
+    """
+    w = weight
+    f = bodyfat
+    al = activity_level
 
     # lbm: lean body mass
     lbm = w * (100 - f) / 100
@@ -270,15 +279,12 @@ def _calc_tdee(measures):
     #      ckals needed to just stay alive
     bmr = 370 + (21.6 * lbm)
 
-    # aa: activity level
-    al = measures.get("activity_level", 1.375)
-
     # tdee: total daily energy expenditure
     tdee = bmr * al
 
     # loosing weight: -%
     # atdee: adjusted tdee
-    atdee = tdee * (100 + measures.get("tdee_adjust", 0)) / 100
+    atdee = tdee * (100 + tdee_adjust) / 100
 
     return {
         "w": w, "bodyfat": f,
@@ -292,16 +298,15 @@ def _calc_limits(body_status) -> dict:
     range_multi = {"f": [0.9, 1.3],
                    "p": [2.3, 3.1],
                    "k": []}  # k basically the leftover kcals
-
     ranges = {"f": [], "p": [], "k": [], "kcals": []}
-    for macro in "fp":
-        for limit in range_multi[macro]:
+
+    for macro, limits in range_multi.items():
+        for limit in limits:
             ranges[macro].append(limit * body_status["lbm"])
 
-    ranges["k"].append(
-        (body_status["atdee"]-ranges["f"][1]*9-ranges["p"][1]*4) / 4)
-    ranges["k"].append(
-        (body_status["atdee"]-ranges["f"][0]*9-ranges["p"][0]*4) / 4)
+    for c in [1, 0]:
+        ranges["k"].append(
+            (body_status["atdee"]-ranges["f"][c]*9-ranges["p"][c]*4) / 4)
 
     ranges["kcals"] = [
         body_status["atdee"]*0.9,
@@ -316,11 +321,19 @@ def _calc_limits(body_status) -> dict:
 def load_body(body_dict: dict) -> dict:
     """Read dict from body file and return tdee and ranges."""
     body_db = {}
+
     for date_str, measures in body_dict.items():
-        body_status = _calc_tdee(measures)
+        w = measures["weight"]
+        f = measures["bodyfat"]
+
+        al = measures.get("activity_level", 1.375)
+        tdee_adjust = measures.get("tdee_adjust", 0)
+
+        body_status = calc_tdee(w, f, al, tdee_adjust)
         body_status["range"] = _calc_limits(body_status)
 
         body_db[date_str] = body_status
+
     return body_db
 
 

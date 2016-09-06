@@ -29,22 +29,6 @@ template_dates = "".join([
     "{line}{col_p}{p:4.0f}{endc}",
     "{line}{col_k}{k:4.0f}{endc}"])
 
-
-def _get_bodystatus2(bodies, day):
-    """."""
-    body_dates = sorted([d for d in bodies], reverse=True)
-
-    body = None
-    for b_date in body_dates:
-        # print(int(b_date), int(date))
-        if int(b_date) <= int(day):
-            body = bodies[b_date]
-            break
-    if not body:
-        body = bodies[body_dates[-1]]
-    return body
-
-
 def _get_bodystatus(bodies, day):
     """."""
     i = bisect_right(bodies, int(day))
@@ -110,6 +94,10 @@ def print_consumed(consumed, body, days_to_show: int=0):
             "col_k": col["k"], "k": m.k,
             "endc": bcolors.ENDC}
         print(template_dates.format(**conf))
+
+    # if today is not present in consumed_dates
+    if not body_today:
+        body_today = body[_get_bodystatus(body_dates, consumed_dates[0])]
 
     print("")
     conf = {
