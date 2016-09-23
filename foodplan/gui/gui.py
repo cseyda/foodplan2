@@ -10,7 +10,7 @@ from foodplan.input.input import pickled_load_consumed, load_body, pickled_load_
 from foodplan.macros.serving import Serving
 from foodplan.macros.macro import Macro
 
-from .scheduler import FoodScheduler
+from .scheduler.scheduler import FoodScheduler
 
 
 class Spinbox(ttk.Widget):
@@ -40,13 +40,37 @@ meals = {
                 "id": "thunfisch"}
         }
     },
+    "Fleischkäse": {
+        "dinner": {
+            "Fleischkäse": {
+                "s_type": "gr",
+                "s_size": 200,
+                "id": "fleischkäse_pizza"},
+            "Kartoffeln": {
+                "s_type": "gr",
+                "s_size": 600,
+                "id": "kartoffel"}
+        }
+    },
+    "Brathähnchen": {
+        "dinner": {
+            "Hähnchen": {
+                "s_type": "gr",
+                "s_size": 650,
+                "id": "brathähnchen_knochen"},
+            "Brot": {
+                "s_type": "servings",
+                "s_size": 1,
+                "id": "_Brot"}
+        }
+    },
     "Hamburger": {
         "dinner": {
             "Hamburger": {
                 "s_type": "servings",
                 "s_size": 3,
                 "id": "Hamburger"}},
-        "lunch":{
+        "lunch": {
             "Mehrkornbrötchen": {
                 "s_type": "servings",
                 "s_size": 1,
@@ -111,8 +135,7 @@ meals = {
             "Reis": {
                 "s_type": "servings",
                 "s_size": 0,
-                "id": "rice_white"}
-            }
+                "id": "rice_white"}}
     },
     "Spaghetti Bolognese": {
         "dinner": {
@@ -147,15 +170,15 @@ meals = {
     },
     "Pute": {
         "dinner": {
-            "Pute":{
+            "Pute": {
                 "s_type": "gr",
                 "s_size": 400,
                 "id": "pute"},
-            "Reis":{
+            "Reis": {
                 "s_type": "servings",
                 "s_size": 1,
                 "id": "rice_white"},
-            "Linsen":{
+            "Linsen": {
                 "s_type": "servings",
                 "s_size": 1,
                 "id": "linsen_suppengrün"},
@@ -188,7 +211,7 @@ meals = {
         "dinner": {
             "Schnitzel": {
                 "s_type": "gr",
-                "s_size": 400,
+                "s_size": 450,
                 "id": "Putenschnitzel"},
             "Nudeln": {
                 "s_type": "gr",
@@ -196,7 +219,7 @@ meals = {
                 "id": "nudeln_gekocht"},
             "Reis": {
                 "s_type": "gr",
-                "s_size": 400,
+                "s_size": 450,
                 "id": "rice_cooked"},
             "Kartoffelbrei": {
                 "s_type": "gr",
@@ -210,6 +233,23 @@ meals = {
                 "s_type": "servings",
                 "s_size": 1,
                 "id": "erbsen_möhren_ja"}
+        }
+    },
+
+    "Geschnetzeltes": {
+        "dinner": {
+            "Fleisch": {
+                "s_type": "gr",
+                "s_size": 400,
+                "id": "pute"},
+            "Nudeln": {
+                "s_type": "gr",
+                "s_size": 350,
+                "id": "nudeln_gekocht"},
+            "Reis": {
+                "s_type": "gr",
+                "s_size": 400,
+                "id": "rice_cooked"},
         }
     }
 }

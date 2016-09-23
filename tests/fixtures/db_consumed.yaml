@@ -1,0 +1,30 @@
+20160905:
+    - breakfast:
+        ei:
+        apfel:
+        knäckebrot:
+            servings: 2
+        mandeln:
+            gr: 15
+    - dinner:
+        fisch:
+            gr: 530
+        rice_white:
+    - lunch:
+    - night:
+        müsli_riegel:
+            servings: 2
+        fisch_rice:
+20160904:
+    ei:
+    apfel:
+    knäckebrot:
+        servings: 2
+    mandeln:
+        gr: 15
+    fisch:
+        gr: 530
+    rice_white:
+    müsli_riegel:
+        servings: 2
+    fisch_rice:

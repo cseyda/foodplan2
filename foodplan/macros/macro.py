@@ -1,5 +1,7 @@
 """."""
 
+import math
+
 import numpy as np
 
 from .serving import Serving, ServingType
@@ -11,7 +13,7 @@ class Macro(object):
     macro_kcals = np.array([[9], [4], [4], [7]])
 
     def __init__(self, *, f=0.0, p=0.0, k=0.0, a=0.0,
-                 serving_size=100, serving=None, name=""):
+                 serving_size=100, serving=None):
         """."""
         self.macros = np.array([f, p, k, a])
 
@@ -20,8 +22,6 @@ class Macro(object):
 
         # f, p, k are the actual nutritional values in gr
         self.size = self._get_gr_from_serving(serving)
-
-        self.name = name
 
     def _get_gr_from_serving(self, serving, init_size=0):
         """."""
@@ -70,6 +70,20 @@ class Macro(object):
 
         return Macro(f=macros[0], p=macros[1], k=macros[2], a=macros[3],
                      serving_size=100, serving=Serving(size, "gr"))
+
+    def __eq__(self, other):
+        """."""
+        for i in range(len(self.macros)):
+            # possible rounding errors while comparing
+            if not math.isclose(self.macros[i], other.macros[i], abs_tol=0.01):
+                return False
+        if not math.isclose(self.size, other.size, abs_tol=0.01):
+            return False
+        if not math.isclose(
+                self.serving_size, other.serving_size, abs_tol=0.01):
+            return False
+
+        return True
 
     @property
     def f(self):

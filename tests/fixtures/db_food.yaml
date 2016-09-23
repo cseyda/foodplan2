@@ -1,0 +1,62 @@
+ei:
+    _type: base
+    _serving_size: 60
+
+    f: 11.0
+    p: 12.9
+    k: 0.5
+
+apfel:
+    _type: base
+    _serving_size: 150
+
+    f:  0.1
+    p:  0.3
+    k: 11.4
+
+knäckebrot:
+    _type: base
+    _serving_size: 13
+
+    f:  2.0
+    p:  9.0
+    k: 60.0
+
+mandeln:
+    _type: base
+
+    f: 50.0
+    p: 21.7
+    k:  9.4
+
+fisch:
+    _type: base
+
+    f:  3.0
+    p: 20.0
+    k:  0.0
+
+rice_white:
+    _type: base
+    _serving_size: 125
+
+    f:  0.8
+    p:  6.8
+    k: 78.0
+
+müsli_riegel:
+    _type: base
+    _serving_size: 22
+
+    f:  9
+    p:  6.5
+    k: 67
+
+fisch_rice:
+    _type: recipe
+    _servings: 3
+
+    fisch:
+        servings: 3
+    rice_white:
+        gr: 200

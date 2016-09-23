@@ -3,16 +3,13 @@
 from pathlib import Path
 import copy
 
-import pickle
-from collections import defaultdict
-
 import yaml
 
 from foodplan.macros.macro import Macro
 from foodplan.macros.serving import Serving
 
 
-# YAML, PICKLE
+# YAML
 
 def load_yaml(yaml_path: Path) -> dict:
     """Return dict from yaml document."""
@@ -27,92 +24,22 @@ def load_string(yaml_string: str) -> dict:
     return yaml_dict
 
 
-def _pickled_load(**kwargs) -> dict:
-    """in: file_path, pickle_path, load_func, load_args."""
-    crc_path = kwargs["crc_path"]
-    file_path = kwargs["file_path"]
-    pickle_path = kwargs["pickle_path"]
-    load_func = kwargs["load_func"]
-    load_args = kwargs.get("load_args", {})
-
-    file_dict = None
-
-    with _Crc(crc_path, file_path) as crc_match:
-        if crc_match:
-            if pickle_path.exists():
-                with pickle_path.open('rb') as f:
-                    file_dict = pickle.load(f)
-                    return file_dict
-
-        file_dict = load_func(file_path, **load_args)
-
-        with pickle_path.open('wb') as f:
-            pickle.dump(file_dict, f, pickle.HIGHEST_PROTOCOL)
-
-        return file_dict
-
 # CRC
+def calc_crc(pathName):
+    """Calculate CRC.
 
-class _Crc(object):
-    """."""
+    https://stackoverflow.com/questions/1742866/compute-crc-of-file-in-python
+    """
+    import zlib
 
-    def __init__(self, crc_file_path, file_path):
-        self.crc_file_path = crc_file_path
-        self.file_path = file_path
-
-        self.crc_dict = self._load()
-        self.file_crc = self.calc_crc(self.file_path)
-
-    def __enter__(self):
-        """Return if the CRC has changed."""
-        return self.crc_dict[self.file_path.name] == self.file_crc
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        """Update CRC at the end (so a new pickle can be written)."""
-        if self.crc_dict[self.file_path.name] != self.file_crc:
-            self.crc_dict.update({self.file_path.name: self.file_crc})
-
-            with self.crc_file_path.open('wb') as f:
-                pickle.dump(self.crc_dict, f, pickle.HIGHEST_PROTOCOL)
-
-    @staticmethod
-    def calc_crc(pathName):
-        """Calculate CRC.
-
-        https://stackoverflow.com/questions/1742866/compute-crc-of-file-in-python
-        """
-        import zlib
-
-        prev = 0
-        with pathName.open("rb") as f:
-            for eachLine in f:
-                prev = zlib.crc32(eachLine, prev)
-        return "%X"%(prev & 0xFFFFFFFF)
-
-    def _load(self):
-        """Load pickled dictionary containing crc information."""
-        crc_dict = defaultdict(str)
-
-        if self.crc_file_path.exists():
-            with self.crc_file_path.open('rb') as f:
-                crc_dict = pickle.load(f)
-
-        return crc_dict
+    prev = 0
+    with pathName.open("rb") as f:
+        for eachLine in f:
+            prev = zlib.crc32(eachLine, prev)
+    return "%X" % (prev & 0xFFFFFFFF)
 
 
 # FOOD
-
-def _parse_base(f_content):
-    """."""
-    serving_size = f_content.get("_serving_size", 100)
-
-    macro = Macro(
-        f=f_content.get("f", 0.0), p=f_content.get("p", 0.0),
-        k=f_content.get("k", 0.0), a=f_content.get("a", 0.0),
-        serving_size=serving_size)
-    return macro
-
-
 def _parse_recipe(f_content):
     """."""
     servings = f_content.get("_servings", None)
@@ -135,38 +62,59 @@ def _parse_recipe(f_content):
     return servings, incredients
 
 
-def _parse_food(yaml_food: dict):
-    """Seperate incredients from recipes."""
-    # base = []
+def _yield_food_items(yaml_food: dict):
+    """."""
     recipes = []
-
-    food = {}
 
     for name, f_content in yaml_food.items():
         if "base" == f_content["_type"]:
-            macro = _parse_base(f_content)
-            macro.name = name
+            serving_size = f_content.get("_serving_size", 100)
 
-            # base.append((name, macro))
-            food[name] = macro
+            f = f_content.get("f", 0.0)
+            p = f_content.get("p", 0.0)
+            k = f_content.get("k", 0.0)
+            a = f_content.get("a", 0.0)
 
+            yield ("base", (name, f, p, k, a, serving_size))
         elif "recipe" == f_content["_type"]:
             servings, incredients = _parse_recipe(f_content)
-
             recipes.append((name, servings, incredients))
 
-    for name, servings, incredients in recipes:
-        r = Macro(serving_size=0)
-        for incredient, serving in incredients.items():
-            m = copy.copy(food[incredient])
-            m.set_serving(serving)
-            r = r + m
-        r.name = name
-        r.serving_size = r.size / servings
+    yield from (("recipe", recipe) for recipe in recipes)
 
-        food[name] = r
+
+def _parse_food(yaml_food: dict):
+    """Seperate incredients from recipes."""
+    # base = []
+
+    food = {}
+
+    for food_item in _yield_food_items(yaml_food):
+        if food_item[0] == "base":
+            name, f, p, k, a, serving_size = food_item[1]
+
+            macro = Macro(f=f, p=p, k=k, a=a, serving_size=serving_size)
+            macro.name = name
+
+            food[name] = macro
+
+        elif food_item[0] == "recipe":
+            name, servings, incredients = food_item[1]
+            r = Macro(serving_size=0)
+            for incredient, serving in incredients.items():
+                m = copy.copy(food[incredient])
+                m.set_serving(serving)
+                r = r + m
+            r.name = name
+            r.serving_size = r.size / servings
+
+            food[name] = r
+        else:
+            raise NotImplemented(
+                "Itemtype {} in parser not implemented" % food_item[0])
 
     return food
+
 
 def get_food_from_file(food_path: Path) -> dict:
     """."""
@@ -175,92 +123,72 @@ def get_food_from_file(food_path: Path) -> dict:
     return food
 
 
-def pickled_load_food(food_path: Path, crc_path: Path, pickle_path: Path) -> dict:
-    """."""
-    pickled_object = _pickled_load(
-        crc_path=crc_path,
-        file_path=food_path,
-        pickle_path=pickle_path,
-        load_func=get_food_from_file,
-        load_args={})
-
-    return pickled_object
-
 # CONSUMED
-def _parse_consumed_entry(eaten, serving, food):
+def _parse_item(food_time_obj):
     """."""
-    # if temp food, there is no entry in db
-    # copy later if there is no temp food found
-    m = None
-    meal_serving = Serving(1, "servings")
+    for food_time, foods in food_time_obj.items():
+        if foods:
+            for food, serving in foods.items():
+                s_type, s_size = _parse_serving(serving)
+                yield food, food_time, s_type, s_size
+
+
+def _parse_serving(serving):
+    """."""
+    s_size = 1
+    s_type = "servings"
 
     if serving:
-        for serving_kind, serving_size in serving.items():
-            # temp food, not in db
-            if serving_kind == "macros":
-                m = Macro(
-                    f=serving_size.get("f", 0),
-                    p=serving_size.get("p", 0),
-                    k=serving_size.get("k", 0),
-                    a=serving_size.get("a", 0))
-            else:
-                meal_serving = Serving(serving_size, serving_kind)
-    if not m:
-        m = copy.copy(food[eaten])
+        for s_t in serving:
+            s_size = serving[s_t]
+            s_type = s_t
+    return s_type, s_size
 
-    m.set_serving(meal_serving)
-    return m
 
-def _parse_consumed_entries(food_with_servings, food):
+def _yield_consumed_items(consumed_yaml):
     """."""
-    r = Macro(serving_size=0)
+    for date, food_times in consumed_yaml.items():
+        for food_time_obj in food_times:
+            if isinstance(food_time_obj, str):
+                serving = food_times[food_time_obj]
+                s_type, s_size = _parse_serving(serving)
+                food = food_time_obj
+                food_time = ""
 
-    for eaten, serving in food_with_servings:
-        m = _parse_consumed_entry(eaten, serving, food)
-        r += m
-    return r
+                yield (date, food, food_time, s_type, s_size)
 
-def _parse_consumed(consumed_yaml: dict, food: dict):
-    """Parse yaml data of food entries and return dict with the macros."""
-    # sort consumed_yaml, get days to do
-    days = sorted((day for day in consumed_yaml), reverse=True)
+            else:
+                for _ in _parse_item(food_time_obj):
+                    food, food_time, s_type, s_size = _
+
+                    yield (date, food, food_time, s_type, s_size)
+
+
+def _parse_consumed(consumed_yaml: dict, food_db: dict):
+    """."""
     days_kcals = {}
+    for _ in _yield_consumed_items(consumed_yaml):
+        date, food, food_time, s_type, s_size = _
 
-    for day in days:
-        # FIXME: convert older file format
-        # old:
+        # if date not in days_kcals:
+        #    days_kcals[date] = Macro(serving_size=0)
+
+        m = food_db[food]
+        m.set_serving(Serving(s_size, s_type))
+
         try:
-            r = _parse_consumed_entries(consumed_yaml[day].items(), food)
-            days_kcals[day] = r
-        # new:
-        except:
-            r = Macro(serving_size=0)
+            days_kcals[date] += m
+        except KeyError:
+            days_kcals[date] = m
 
-            for times in consumed_yaml[day]:
-                for time, items in times.items():
-                    if items:
-                        r += _parse_consumed_entries(items.items(), food)
-            days_kcals[day] = r
     return days_kcals
+
 
 def get_consumed_from_file(consumed_path: Path, food: dict) -> dict:
     """."""
     consumed_dict = load_yaml(consumed_path)
     consumed = _parse_consumed(consumed_dict, food)
     return consumed
-
-def pickled_load_consumed(
-        consumed_path: Path, food: dict,
-        crc_path: Path, pickle_path: Path) -> dict:
-    """."""
-    pickled_object = _pickled_load(
-        crc_path=crc_path,
-        file_path=consumed_path,
-        pickle_path=pickle_path,
-        load_func=get_consumed_from_file,
-        load_args={"food": food})
-
-    return pickled_object
 
 
 def calc_tdee(weight, bodyfat, activity_level, tdee_adjust):
@@ -306,12 +234,13 @@ def _calc_limits(body_status) -> dict:
 
     for c in [1, 0]:
         ranges["k"].append(
-            (body_status["atdee"]-ranges["f"][c]*9-ranges["p"][c]*4) / 4)
+            (body_status["atdee"] - ranges["f"][c] * 9 -
+                ranges["p"][c] * 4) / 4)
 
     ranges["kcals"] = [
-        body_status["atdee"]*0.9,
-        body_status["atdee"]*1.1,
-        body_status["atdee"]*1.3]
+        body_status["atdee"] * 0.9,
+        body_status["atdee"] * 1.1,
+        body_status["atdee"] * 1.3]
 
     return ranges
 
@@ -335,38 +264,3 @@ def load_body(body_dict: dict) -> dict:
         body_db[date_str] = body_status
 
     return body_db
-
-
-def test():
-    """."""
-    test_str = """
-milch_und_quark:
-    _type: recipe
-    _servings: 28
-
-    milch03:
-        gr: 200
-    quark:
-        gr: 50
-
-# milchprodukte und ei
-milch03:
-    _type: base
-
-    f: 0.0
-    p: 5.
-    k: 5.
-
-quark:
-    _type: base
-
-    f:  5.
-    p: 10.
-    k:  0.
-    """
-    test_dict = load_string(test_str)
-    incredients, recipes = _seperate_base_recipes(test_dict)
-    print(incredients, recipes)
-
-if __name__ == '__main__':
-    test()

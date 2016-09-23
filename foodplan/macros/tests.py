@@ -5,8 +5,6 @@ import unittest
 from foodplan.macros.macro import Macro
 from foodplan.macros.serving import Serving
 
-import cProfile, pstats, io
-
 
 class TestMacro(unittest.TestCase):
     """."""
@@ -25,11 +23,6 @@ class TestMacro(unittest.TestCase):
         """."""
         pass
 
-    def _compare_obj_to_dict(self, o, var):
-        """Compare variables of an object with values of a dict."""
-        for k, v in var.items():
-            self.assertEqual(getattr(o, k), v)
-
     def test_initiation(self):
         """Test if Macro is initiated correctly."""
         # values the test objects should have
@@ -39,7 +32,7 @@ class TestMacro(unittest.TestCase):
 
         for obj_name, var in test_vars.items():
             o = getattr(self, obj_name)
-            self._compare_obj_to_dict(o, var)
+            self.assertTrue(_compare_obj_to_dict(o, var))
 
     def test_addition(self):
         """Test for proper addition. Macros, size, serving_size."""
@@ -50,18 +43,8 @@ class TestMacro(unittest.TestCase):
             (p.macros[0], p.macros[1], p.macros[2], p.macros[3]),
             (1.2, 1.4, 1.6, 0.0))
 
-    def test_speed(self):
-        """."""
-        p = Macro(serving_size=0)
-        pr = cProfile.Profile()
-        pr.enable()
 
-        for i in range(1, 1000):
-            p += self.m + self.n
-
-        pr.disable()
-        s = io.StringIO()
-        sortby = 'cumulative'
-        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-        ps.print_stats()
-        # print(s.getvalue())
+def _compare_obj_to_dict(o, var):
+    """Compare variables of an object with values of a dict."""
+    for k, v in var.items():
+        return getattr(o, k) == v

@@ -15,10 +15,10 @@ Every scheduler can have excluded days.
 - metric
 """
 
-import heapq
-
 from foodplan.macros.serving import Serving
 from foodplan.macros.macro import Macro
+
+from .static import metric, specific_days
 
 # list to keep order
 schedule_plan = [
@@ -87,34 +87,35 @@ schedule_plan = [
     },
 
     # breakfast toppings
-    {"scheduler": {
-        "name": "metric",
-        "options": {
-            "exclude": ["quark"]}
-        },
-    "items": [
-        {"s_type": "gr", "s_size": 15, "id": "honig", "mt": "breakfast"},
-        {"s_type": "gr", "s_size": 15, "id": "marmelade", "mt": "breakfast"},
-        {"s_type": "servings", "s_size": 1, "id": "kochschinken", "mt": "breakfast"},
-        [{"s_type": "servings", "s_size": 1, "id": "emmentaler_aggenstein", "mt": "breakfast"},
-        {"s_type": "servings", "s_size": 2, "id": "salami", "mt": "breakfast"}],
-        {"s_type": "gr", "s_size": 15, "id": "cashew_mus", "mt": "breakfast"},
-        {"s_type": "gr", "s_size": 15, "id": "mandeln", "mt": "breakfast"},
-    ]
-    },
+    # {"scheduler": {
+    #     "name": "metric",
+    #     "options": {
+    #         "exclude": ["quark"]}
+    #     },
+    # "items": [
+    #     {"s_type": "gr", "s_size": 15, "id": "honig", "mt": "breakfast"},
+    #     {"s_type": "gr", "s_size": 15, "id": "marmelade", "mt": "breakfast"},
+    #     {"s_type": "servings", "s_size": 1, "id": "kochschinken", "mt": "breakfast"},
+    #     [{"s_type": "servings", "s_size": 1, "id": "emmentaler_aggenstein", "mt": "breakfast"},
+    #      {"s_type": "servings", "s_size": 2, "id": "salami", "mt": "breakfast"}],
+    #     {"s_type": "gr", "s_size": 15, "id": "cashew_mus", "mt": "breakfast"},
+    #     {"s_type": "gr", "s_size": 15, "id": "mandeln", "mt": "breakfast"},
+    # ]
+    # },
 
     # breakfast toppings
     {"scheduler": {
         "name": "metric",
         "options": {
-            "exclude": ["quark"]}
+            "exclude": ["quark"],
+            "rounds": 2}
         },
     "items": [
         {"s_type": "gr", "s_size": 15, "id": "honig", "mt": "breakfast"},
         {"s_type": "gr", "s_size": 15, "id": "marmelade", "mt": "breakfast"},
         {"s_type": "servings", "s_size": 1, "id": "kochschinken", "mt": "breakfast"},
         [{"s_type": "servings", "s_size": 1, "id": "emmentaler_aggenstein", "mt": "breakfast"},
-        {"s_type": "servings", "s_size": 2, "id": "salami", "mt": "breakfast"}],
+         {"s_type": "servings", "s_size": 2, "id": "salami", "mt": "breakfast"}],
         {"s_type": "gr", "s_size": 15, "id": "cashew_mus", "mt": "breakfast"},
         {"s_type": "gr", "s_size": 15, "id": "mandeln", "mt": "breakfast"},
     ]
@@ -142,6 +143,7 @@ class ScheduleItem(object):
         self.macro = Macro(serving_size=0)
 
         # to keep label + serving. list for food + groups
+        # meals = [(label, serving, meal_time), ...]
         self.meals = []
 
         self._process(item, food_db, meal_choices)
@@ -195,109 +197,6 @@ def prepare_schedule_food(schedule_plan, food_db, meal_choices):
 
     return processed_plans
 
-class Scheduler(object):
-    """."""
-
-    def __init__(self, options, days):
-        """."""
-        self.plan = {
-            day: {
-                mt: [] for mt in ["breakfast", "dinner", "lunch", "night"]
-            } for day in days}
-        self.macros = {day: Macro(serving_size=0) for day in days}
-
-class specific_days(Scheduler):
-    """."""
-
-    def __call__(self, macro_per_day, prepared_schedule):
-        """static."""
-        d_set = set()
-
-        for schedule_item in prepared_schedule:
-            for day in self.plan:
-                self.macros[day] += schedule_item.macro
-                d_set.add(day)
-
-                for meal in schedule_item.meals:
-                    label, serving, mt = meal
-                    self.plan[day][mt].append((label, serving))
-
-        return self.plan, self.macros, d_set
-
-class metric(Scheduler):
-    """."""
-
-    def __init__(self, options, days):
-        """."""
-        super().__init__(options, days)
-
-        self.possible_modifiers = {
-            # protein
-            "high_p": {"f": 0, "p": 1, "k": 0},
-            "low_p": {"f": 0, "p": -1, "k": 0},
-            # carbs
-            "high_k": {"f": 0, "p": 0, "k": 1},
-            "low_k": {"f": 0, "p": 0, "k": -1},
-            #fat
-            "high_f": {"f": 1, "p": 0, "k": 0},
-            "low_f": {"f": -1, "p": 0, "k": 0}}
-
-        self.day_target = {"f": 60, "p": 150, "k": 200}
-
-        try:
-            self.modifier = self.possible_modifiers[options["where"]]
-        except KeyError:
-            self.modifier = {"f": -1, "p": -1, "k": -1}
-
-    def build_heap(self, prepared_schedule, macro_per_day):
-        """Push score + day and item index onto max heap. Return the heap."""
-        h = []
-        for i_idx, schedule_item in enumerate(prepared_schedule):
-            for day in self.plan:
-                score = self.food_score(
-                    schedule_item.macro, macro_per_day[day])
-                heapq.heappush(h, (score, day, i_idx))
-        return h
-
-    def schedule_items(self, prepared_schedule, h):
-        """."""
-        i_set = set()
-        d_set = set()
-
-        for i in range(len(h)):
-            # pop max score
-            score, d_idx, i_idx = heapq.heappop(h)
-
-            print(score, d_idx, prepared_schedule[i_idx].meals[0][0])
-            # greedy, get first best new match
-            if i_idx not in i_set and d_idx not in d_set:
-                i_set.add(i_idx)
-                d_set.add(d_idx)
-
-                schedule_item = prepared_schedule[i_idx]
-
-                for meal in schedule_item.meals:
-                    label, serving, mt = meal
-                    self.plan[d_idx][mt].append((label, serving))
-                self.macros[d_idx] += schedule_item.macro
-
-            # if len(i_set) == len(schedule_item.meals):
-            #    break
-        print()
-        return d_set
-
-    def __call__(self, macro_per_day, prepared_schedule):
-        """."""
-        h = self.build_heap(prepared_schedule, macro_per_day)
-        affected_days = self.schedule_items(prepared_schedule, h)
-
-        return self.plan, self.macros, affected_days
-
-    def food_score(self, item, day_now):
-        """."""
-        return sum(
-            ((self.day_target[m] - getattr(day_now, m)) / self.day_target[m] * \
-            getattr(item, m) * self.modifier[m]) for m in "fpk")
 
 class FoodScheduler(object):
     """."""

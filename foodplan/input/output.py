@@ -21,7 +21,7 @@ class bcolors:
 
 
 template_header = "{}{:^8}{:^5}{:^4}{:^4}{:^4}{}".format(
-    bcolors.UNDERLINE+bcolors.OKGREEN,
+    bcolors.UNDERLINE + bcolors.OKGREEN,
     "date", "kcals", " f", " p", " c", bcolors.ENDC)
 template_dates = "".join([
     "{line}{date:^8}{col_kcals}{kcals:5.0f}{endc}",
@@ -29,11 +29,12 @@ template_dates = "".join([
     "{line}{col_p}{p:4.0f}{endc}",
     "{line}{col_k}{k:4.0f}{endc}"])
 
+
 def _get_bodystatus(bodies, day):
     """."""
     i = bisect_right(bodies, int(day))
     if i:
-        return bodies[i-1]
+        return bodies[i - 1]
     return bodies[0]
 
 
