@@ -1,5 +1,6 @@
 # foodplan
 
+## Purpose
 A set of programs to track macros and weight, and do meal plans.
 
 ## Short history
