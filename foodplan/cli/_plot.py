@@ -1,13 +1,16 @@
+"""Plot functionality."""
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np
+
+import datetime
+
+from foodplan.macros.macro import Macro
+
+
 def plot_week():
     """."""
-    import matplotlib.pyplot as plt
-    import matplotlib.dates as mdates
-    import numpy as np
-
-    import datetime
-
-    from foodplan.macros.macro import Macro
-
+    # TODO: fix file loading
     food = pickled_load_food(
         data_path / Path("food.yaml"),
         data_path / Path("crc.pickle"),
@@ -82,7 +85,7 @@ def plot_week():
 
     fig, ax = plt.subplots()
 
-    width=1
+    width = 1
     plt.bar(ind, f, width=width, color='r')
     plt.bar(ind, p, width=width, color='b', bottom=sumzip(f))
     plt.bar(ind, k, width=width, color='g', bottom=sumzip(f, p))
@@ -92,3 +95,8 @@ def plot_week():
     ax_w.grid(True)
 
     plt.show()
+
+
+def sumzip(*items):
+    """."""
+    return [sum(values) for values in zip(*items)]

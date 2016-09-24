@@ -52,11 +52,6 @@ def main(data_path: Path, days_to_show: int=0):
     print_consumed(consumed, body, days_to_show)
 
 
-def sumzip(*items):
-    """."""
-    return [sum(values) for values in zip(*items)]
-
-
 if __name__ == '__main__':
     p = "/home/seydanator/Documents/foodplan"
     days_to_show = 9
