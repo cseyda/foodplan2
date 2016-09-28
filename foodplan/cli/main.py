@@ -2,61 +2,87 @@
 
 from os import sys
 from pathlib import Path
+from datetime import date, datetime, timedelta
 
-import yaml
+# import yaml
 
 from foodplan.input.input import load_yaml, calc_crc
-
-from foodplan.input.input import load_body, get_consumed_from_file
+# from foodplan.input.input import load_body  # , get_consumed_from_file
 
 from foodplan.input.output import print_consumed
 
 from foodplan.db.db import DB
-from foodplan.input.input import _yield_food_items
+from foodplan.db.db import delete_insert_consumed, delete_insert_bodies
+
+from foodplan.input.input import _yield_food_items, _yield_consumed_items
+from foodplan.input.input import _yield_body_items
 
 
-def _config(path_str: str = None):
+def _config(sys_cmd):
     """."""
-    if path_str:
-        data_path = Path(path_str)
-    else:
-        if len(sys.argv) != 2:
-            print("Second argument has to be the folder with the files.")
-            exit()
-        data_path = Path(sys.argv[1])
-    return data_path
+    config_file_path = Path(sys_cmd[1])
+    config_file = load_yaml(config_file_path)
+
+    if "path" not in config_file:
+        print("Config file needs entry :path: for location of files.")
+
+    return {"path": Path(config_file["path"])}
+
+
+def dates_till_next_sunday(days=8):
+    """."""
+    # get sonday and count backwards
+    today = date.today()
+    week_year, week_week, week_day = today.isocalendar()
+    week_sunday = datetime.strptime(
+        "{}-W{}-0".format(week_year, week_week), "%Y-W%W-%w")
+
+    startdate = week_sunday - timedelta(days)
+    for day in range(0, days + 1):
+        yield startdate + timedelta(day)
+
+
+def has_crc_changed(db, p, key):
+    """Create CRC of :p and compare with CRC stored in :db under :key."""
+    crc_old = db.get_key(key)
+    crc_new = calc_crc(p)
+
+    if crc_old != crc_new:
+        db.set_key(key, crc_new)
+        return True
+
+    return False
 
 
 def main(data_path: Path, days_to_show: int=0):
     """."""
     db = DB(str(data_path / Path("food.db")))
 
-    # load food only if neccesary
-    crc_food_old = db.get_key("crc_food")
-    crc_food_new = calc_crc(data_path / Path("food.db"))
-
-    if crc_food_old != crc_food_new:
-        db.set_key("crc_food", crc_food_new)
-
-        with (data_path / Path("food.yaml")).open("r") as f:
-            food_yaml = yaml.safe_load(f)
-
+    if has_crc_changed(db, data_path / Path("food.yaml"), "crc_food"):
+        food_yaml = load_yaml(data_path / Path("food.yaml"))
         db.insert_food(_ for _ in _yield_food_items(food_yaml))
 
-    consumed = get_consumed_from_file(
-        data_path / Path("consumed.yaml"), db)
+    if has_crc_changed(db, data_path / Path("consumed.yaml"), "crc_consumed"):
+        consumed_yaml = load_yaml(data_path / Path("consumed.yaml"))
+        delete_insert_consumed(_yield_consumed_items(consumed_yaml), db)
 
-    body_yaml = load_yaml(data_path / Path("body.yaml"))
-    body = load_body(body_yaml)
+    if has_crc_changed(db, data_path / Path("body.yaml"), "crc_body"):
+        body_yaml = load_yaml(data_path / Path("body.yaml"))
+        delete_insert_bodies(_yield_body_items(body_yaml), db)
 
-    print_consumed(consumed, body, days_to_show)
+    dates_to_show = [_ for _ in dates_till_next_sunday(days_to_show)]
+
+    print_consumed(db, dates_to_show)
 
 
 if __name__ == '__main__':
-    p = "/home/seydanator/Documents/foodplan"
+    if len(sys.argv) != 2:
+        print("Second argument has to be the path to the config file.")
+        exit()
+
     days_to_show = 9
 
-    data_path = _config(p)
-    main(data_path, days_to_show)
+    config = _config(sys.argv)
+    main(config["path"], days_to_show)
 
     # plot_week()

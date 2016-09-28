@@ -8,6 +8,8 @@ import yaml
 from foodplan.macros.macro import Macro
 from foodplan.macros.serving import Serving
 
+from foodplan.db.db import ConsumedRecord, BodyRecord
+
 
 # YAML
 
@@ -155,13 +157,13 @@ def _yield_consumed_items(consumed_yaml):
                 food = food_time_obj
                 food_time = ""
 
-                yield (date, food, food_time, s_type, s_size)
+                yield ConsumedRecord(date, food, food_time, s_type, s_size)
 
             else:
                 for _ in _parse_item(food_time_obj):
                     food, food_time, s_type, s_size = _
 
-                    yield (date, food, food_time, s_type, s_size)
+                    yield ConsumedRecord(date, food, food_time, s_type, s_size)
 
 
 def _parse_consumed(consumed_yaml: dict, food_db: dict):
@@ -190,77 +192,16 @@ def get_consumed_from_file(consumed_path: Path, food: dict) -> dict:
     consumed = _parse_consumed(consumed_dict, food)
     return consumed
 
-
-def calc_tdee(weight, bodyfat, activity_level, tdee_adjust):
-    """Calculate TDEE and surrounding numbers.
-
-    LBM, BMR, aTDEE
-    """
-    w = weight
-    f = bodyfat
-    al = activity_level
-
-    # lbm: lean body mass
-    lbm = w * (100 - f) / 100
-
-    # bmr: body maintenace rate
-    #      ckals needed to just stay alive
-    bmr = 370 + (21.6 * lbm)
-
-    # tdee: total daily energy expenditure
-    tdee = bmr * al
-
-    # loosing weight: -%
-    # atdee: adjusted tdee
-    atdee = tdee * (100 + tdee_adjust) / 100
-
-    return {
-        "w": w, "bodyfat": f,
-        "lbm": lbm, "bmr": bmr, "al": al,
-        "tdee": tdee, "atdee": atdee}
-
-
-def _calc_limits(body_status) -> dict:
-    """."""
-    # gr per kg lean body mass
-    range_multi = {"f": [0.9, 1.3],
-                   "p": [2.3, 3.1],
-                   "k": []}  # k basically the leftover kcals
-    ranges = {"f": [], "p": [], "k": [], "kcals": []}
-
-    for macro, limits in range_multi.items():
-        for limit in limits:
-            ranges[macro].append(limit * body_status["lbm"])
-
-    for c in [1, 0]:
-        ranges["k"].append(
-            (body_status["atdee"] - ranges["f"][c] * 9 -
-                ranges["p"][c] * 4) / 4)
-
-    ranges["kcals"] = [
-        body_status["atdee"] * 0.9,
-        body_status["atdee"] * 1.1,
-        body_status["atdee"] * 1.3]
-
-    return ranges
-
-
 # BODY
 
-def load_body(body_dict: dict) -> dict:
-    """Read dict from body file and return tdee and ranges."""
-    body_db = {}
 
+def _yield_body_items(body_dict: dict):
+    """."""
     for date_str, measures in body_dict.items():
         w = measures["weight"]
         f = measures["bodyfat"]
 
-        al = measures.get("activity_level", 1.375)
         tdee_adjust = measures.get("tdee_adjust", 0)
+        al = measures.get("activity_level", 1.375)
 
-        body_status = calc_tdee(w, f, al, tdee_adjust)
-        body_status["range"] = _calc_limits(body_status)
-
-        body_db[date_str] = body_status
-
-    return body_db
+        yield BodyRecord(date_str, w, f, tdee_adjust, al)

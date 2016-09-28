@@ -1,42 +1,109 @@
 """."""
 
+from collections import namedtuple
+
 import sqlite3
 
 from foodplan.macros.macro import Macro
-# from foodplan.macros.serving import Serving
-
-# consumed:
-# date, food_name, food_time, serving_type, serving_size
+from foodplan.macros.serving import Serving
 
 # date changed for updated foods?
 
-# food:
-# food_name, serving_size, f, p, k, a
+
+tables = {
+    "consumed": [
+        ("date", "text"),
+        ("name", "text"),
+        ("food_time", "text"),
+        ("serving_type", "text"),
+        ("serving_size", "integer")],
+    "body": [
+        ("date", "text"),
+        ("weight", "real"),
+        ("bodyfat", "integer"),
+        ("adjust", "integer"),
+        ("activity_level", "real")],
+    "food": [
+        ("name", "text"),
+        ("serving_size", "integer"),
+        ("f", "real"),
+        ("p", "real"),
+        ("k", "real"),
+        ("a", "real")],
+    "recipe": [],
+
+    # to store arbitrary information, like crc strings
+    "keyvalue": [
+        ("key", "text"),
+        ("value", "text")
+    ]
+}
+
+
+ConsumedRecord = namedtuple(
+    'ConsumedRecord',
+    ', '.join(k for k, v in tables['consumed']))
+
+FoodRecord = namedtuple(
+    'FoodRecord',
+    ', '.join(k for k, v in tables['food']))
+
+KeyvalueRecord = namedtuple(
+    'KeyvalueRecord',
+    ', '.join(k for k, v in tables['keyvalue']))
+
+BodyRecord = namedtuple(
+    'BodyRecord',
+    ', '.join(k for k, v in tables['body']))
+
+
+def macros_from_consumed(record_iter, db):
+    """Return kcals from ConsumedRecords iterator."""
+    m_total = Macro(serving_size=0)
+    for record in record_iter:
+        food_record = db.food(record.name)
+
+        m = Macro.RecordFactory(food_record)
+        m.set_serving(
+            Serving(size=record.serving_size, kind=record.serving_type))
+        m_total += m
+    return m_total
+
+
+def delete_insert_consumed(consumed, db):
+    """Deletes rows of same date as rows inserted."""
+    # rows have to be deleted first to prevent manyfold doubles
+    # if :consumed is generator
+    consumed_2 = []
+    dates = set()
+    for record in consumed:
+        dates.add((record.date,))
+        consumed_2.append(record)
+
+    with db.conn:
+        db.conn.executemany(
+            "DELETE FROM consumed WHERE date=?", dates)
+    db.insert_consumed(consumed_2)
+
+
+def delete_insert_bodies(bodies, db):
+    """Deletes rows of same date as rows inserted."""
+    # rows have to be deleted first to prevent manyfold doubles
+    # if :consumed is generator
+    bodies_2 = []
+    dates = set()
+    for record in bodies:
+        dates.add((record.date,))
+        bodies_2.append(record)
+
+    with db.conn:
+        db.conn.executemany(
+            "DELETE FROM body WHERE date=?", dates)
+    db.insert_bodies(bodies_2)
 
 
 class DB(object):
     """."""
-    tables = {
-        "consumed": [
-            ("date", "text"),
-            ("name", "text"),
-            ("food_time", "text"),
-            ("serving_type", "text"),
-            ("serving_size", "integer")],
-        "body": [],
-        "food": [
-            ("name", "text"),
-            ("serving_size", "integer"),
-            ("f", "real"),
-            ("p", "real"),
-            ("k", "real"),
-            ("a", "real")],
-        "recipe": [],
-        "keyvalue": [
-            ("key", "text"),
-            ("value", "text")
-        ]
-    }
 
     def __init__(self, location=':memory:'):
         """."""
@@ -53,10 +120,20 @@ class DB(object):
         return macro
 
     def insert_consumed(self, consumed):
-        """."""
+        """Insert consumed data into the DB.
+
+        Input must be an iterable, containing ConsumedRecords"""
         with self.conn:
-                self.db.conn.executemany(
+                self.conn.executemany(
                     "INSERT INTO consumed VALUES (?,?,?,?,?)", consumed)
+
+    def insert_bodies(self, bodies):
+        """Insert body data into the DB.
+
+        Input must be an iterable, containing BodyRecords"""
+        with self.conn:
+                self.conn.executemany(
+                    "INSERT INTO body VALUES (?,?,?,?,?)", bodies)
 
     def insert_food(self, food):
         """."""
@@ -109,20 +186,44 @@ class DB(object):
                     (name, serving_size, f, p, k, a))
 
     def food(self, name):
-        """Returns tuple (name, serving_size, f, p, k, a)."""
+        """Returns FoodRecord."""
         sel = """SELECT * FROM food AS f WHERE f.name = ?"""
 
         with self.conn:
-            for row in self.conn.execute(sel, (name,)):
-                return row
+            query = self.conn.execute(sel, (name,))
+            for record in map(FoodRecord._make, query.fetchall()):
+                return record
 
-    def body(self):
-        """."""
-        pass
+    def body(self, date):
+        """Return the most recent BodyRecord earlier than :date."""
+        sel = "SELECT * FROM body WHERE date <= ? ORDER BY date DESC LIMIT 1"
 
-    def consumed(self):
+        with self.conn:
+            query = self.conn.execute(sel, (date,))
+            rows = query.fetchall()
+
+            if rows:
+                return BodyRecord._make(rows[0])
+
+            # date before the first body measurement, take the earliest one
+            sel = "SELECT * FROM body ORDER BY date ASC LIMIT 1"
+
+            query = self.conn.execute(sel)
+            rows = query.fetchall()
+
+            if rows:
+                return BodyRecord._make(rows[0])
+            else:
+                raise()
+
+    def consumed(self, date):
         """."""
-        pass
+        sel = """SELECT * FROM consumed AS c WHERE c.date = ?"""
+
+        with self.conn:
+            query = self.conn.execute(sel, (date,))
+            for record in map(ConsumedRecord._make, query.fetchall()):
+                yield record
 
     def get_key(self, key):
         """Get value from key-value store by key.
@@ -143,19 +244,14 @@ class DB(object):
             "INSERT INTO keyvalue (value, key) SELECT ?,? "
             "WHERE (SELECT Changes() = 0)")
         with self.conn:
-            self.conn.execute(sel_update, (str(key), str(value)))
-            self.conn.execute(sel_insert, (str(key), str(value)))
+            self.conn.execute(sel_update, (str(value), str(key)))
+            self.conn.execute(sel_insert, (str(value), str(key)))
         return str(key), str(value)
 
     def _build_tables(self):
         """."""
-        # except sqlite3.OperationalError as e:
-        #    error_text = e.args[0].split()
-        #    if error_text[0] != 'table' \
-        #            or error_text[2:] != ['already', 'exists']:
-        #        raise(e)
         commands = []
-        for k, v in self.tables.items():
+        for k, v in tables.items():
             if v:
                 colomns = ", ".join(
                     "{} {}".format(name, type_) for name, type_ in v)

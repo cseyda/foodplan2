@@ -6,9 +6,11 @@ import tkinter as tk
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-from foodplan.input.input import pickled_load_consumed, load_body, pickled_load_food, load_yaml
+from foodplan.input.input import load_body, load_yaml
 from foodplan.macros.serving import Serving
 from foodplan.macros.macro import Macro
+
+from foodplan.db.db import DB
 
 from .scheduler.scheduler import FoodScheduler
 
@@ -20,12 +22,9 @@ class Spinbox(ttk.Widget):
         """."""
         ttk.Widget.__init__(self, master, 'ttk::spinbox', kw)
 
-data_path = Path("/home/seydanator/Documents/foodplan")
-food = pickled_load_food(
-    data_path / Path("food.yaml"),
-    data_path / Path("crc.pickle"),
-    data_path / Path("food.pickle"))
 
+data_path = Path("/home/seydanator/Documents/foodplan")
+food = DB(str(data_path / Path("food.db")))
 
 meals = {
     "Pizza": {
@@ -295,9 +294,9 @@ class LunchtimeFrame(ttk.LabelFrame):
             *["gr", "gr", "servings"])  # , command=handler)
         oo_var.set(s_type)
 
-        ll.grid(row=row*2, column=0, columnspan=2)
-        spin_size.grid(row=row*2+1, column=0)
-        oo.grid(row=row*2+1, column=1, sticky=tk.W+tk.E)
+        ll.grid(row=row * 2, column=0, columnspan=2)
+        spin_size.grid(row=row * 2 + 1, column=0)
+        oo.grid(row=row * 2 + 1, column=1, sticky=tk.W + tk.E)
 
         self.meals.append((m_id, size_var, oo_var))
 
@@ -367,17 +366,18 @@ class DayFrame(ttk.LabelFrame):
 
         o = ttk.OptionMenu(self, v, *optList, command=handler)
         # o = ttk.OptionMenu(fr, v, *optList, command=handler)
-        o.grid(sticky=tk.E+tk.W)
+        o.grid(sticky=tk.E + tk.W)
         # o.columnconfigure(0, weight=1)
 
         for row, meal_time in enumerate(["dinner", "lunch"], 1):
             mt = LunchtimeFrame(self, meal_time)
-            mt.grid(row=row, sticky=tk.E+tk.W)
+            mt.grid(row=row, sticky=tk.E + tk.W)
 
             self.meal_times[meal_time] = mt
 
     def on_combo_selected(self, event, ident):
-        """Combobox for foods. On change delete previously entried foods and enter new ones."""
+        """Combobox for foods. On change delete previously entried foods
+        and enter new ones."""
         # print("event", event, "ident", ident)
         for mt in ["dinner", "lunch"]:
             mt_frame = self.meal_times[mt]
@@ -404,6 +404,7 @@ class DayFrame(ttk.LabelFrame):
 
             m[mt].extend(mt_m)
         return macros_day, m
+
 
 class Application(ttk.Frame):
     """Mainframe."""
@@ -459,7 +460,7 @@ class Application(ttk.Frame):
         today_week = self.today.isocalendar()[1]
         diff_week = week_number - today_week
 
-        week = self.today + timedelta(7*diff_week)
+        week = self.today + timedelta(7 * diff_week)
 
         week_year, week_week, week_day = week.isocalendar()
 
@@ -474,7 +475,7 @@ class Application(ttk.Frame):
     def create_widgets(self):
         """Create options frame + frames for the different days."""
         optionFrame = ttk.LabelFrame(self, text="Options")
-        optionFrame.grid(column=0, row=0, sticky=tk.N+tk.S+tk.E+tk.W)
+        optionFrame.grid(column=0, row=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         row = 0
 
@@ -485,14 +486,16 @@ class Application(ttk.Frame):
             self.create_food_option_dropdown(optionFrame, label, opts, row)
             row += 1
 
-        ok_button = ttk.Button(master=optionFrame, text="OK", command=self.on_button_press)
+        ok_button = ttk.Button(
+            master=optionFrame, text="OK", command=self.on_button_press)
         ok_button.grid()
         row += 1
 
         # create dayframes
-        for col, day in enumerate(["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"], 1):
+        for col, day in enumerate(
+                ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"], 1):
             df = DayFrame(self, day, date=nextweek_monday + timedelta(col - 1))
-            df.grid(column=col, row=0, sticky=tk.N+tk.S+tk.E+tk.W)
+            df.grid(column=col, row=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
             self.days[day] = df
 
@@ -554,6 +557,7 @@ def main():
     app = Application(master=root)
     app.master.title('Schedule Food')
     app.mainloop()
+
 
 if __name__ == '__main__':
     main()

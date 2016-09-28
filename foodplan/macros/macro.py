@@ -23,6 +23,12 @@ class Macro(object):
         # f, p, k are the actual nutritional values in gr
         self.size = self._get_gr_from_serving(serving)
 
+    @classmethod
+    def RecordFactory(cls, record):
+        """Return a Macro instance based on a FoodRecord."""
+        return cls(f=record.f, p=record.p, k=record.k, a=record.a,
+                   serving_size=record.serving_size)
+
     def _get_gr_from_serving(self, serving, init_size=0):
         """."""
         if serving:

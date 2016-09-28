@@ -1,10 +1,12 @@
 """."""
 
 from collections import defaultdict
-from bisect import bisect_right
 import datetime
 
 from foodplan.macros.macro import Macro
+from foodplan.macros.body import Body
+
+from foodplan.db.db import macros_from_consumed
 
 
 class bcolors:
@@ -30,14 +32,6 @@ template_dates = "".join([
     "{line}{col_k}{k:4.0f}{endc}"])
 
 
-def _get_bodystatus(bodies, day):
-    """."""
-    i = bisect_right(bodies, int(day))
-    if i:
-        return bodies[i - 1]
-    return bodies[0]
-
-
 def _get_colors(body_status, macros):
     """."""
     col = defaultdict(str)
@@ -48,7 +42,7 @@ def _get_colors(body_status, macros):
         m = getattr(macros, macro)
 
         col[macro] = colors[-1]
-        for r, color in zip(body_status["range"][macro], colors):
+        for r, color in zip(body_status.limits[macro], colors):
             if m < r:
                 col[macro] = color
                 break
@@ -63,23 +57,29 @@ def _get_now_str(hours: int=0) -> str:
     return today.strftime("%Y%m%d")
 
 
-def print_consumed(consumed, body, days_to_show: int=0):
+def print_consumed(db, dates_to_show):
+    """."""
+    data = _generate_output_data(db, dates_to_show)
+    output_str = _get_output_string(data)
+    print(output_str)
+
+
+def _generate_output_data(db, dates_to_show):
     """."""
     today = _get_now_str(5)
     body_today = None
     avg = Macro(serving_size=0)
 
-    # sort body_dates
-    body_dates = sorted([int(d) for d in body])
-    consumed_dates = sorted([d for d in consumed], reverse=True)[:days_to_show]
+    data = []
+    data.append((template_header, {}))
 
-    print(template_header)
-    for day in consumed_dates:
-        m = consumed[day]
+    for day in dates_to_show:
+        day = day.strftime("%Y%m%d")
+
+        m = macros_from_consumed(db.consumed(day), db)
         avg += m
 
-        # get body_status, ranges for day
-        body_status = body[_get_bodystatus(body_dates, day)]
+        body_status = Body.RecordFactory(db.body(day))
 
         col = _get_colors(body_status, m)
 
@@ -94,65 +94,58 @@ def print_consumed(consumed, body, days_to_show: int=0):
             "col_p": col["p"], "p": m.p,
             "col_k": col["k"], "k": m.k,
             "endc": bcolors.ENDC}
-        print(template_dates.format(**conf))
+        data.append((template_dates, conf))
 
     # if today is not present in consumed_dates
     if not body_today:
-        body_today = body[_get_bodystatus(body_dates, consumed_dates[0])]
+        day = dates_to_show[0].strftime("%Y%m%d")
+        body_today = Body.RecordFactory(db.body(day))
 
-    print("")
+    data.append((None, {}))
+
     conf = {
         "line": col["day"], "date": "average ",
-        "col_kcals": "", "kcals": avg.kcals / len(consumed_dates),
-        "col_f": "", "f": avg.f / len(consumed_dates),
-        "col_p": "", "p": avg.p / len(consumed_dates),
-        "col_k": "", "k": avg.k / len(consumed_dates),
+        "col_kcals": "", "kcals": avg.kcals / len(dates_to_show),
+        "col_f": "", "f": avg.f / len(dates_to_show),
+        "col_p": "", "p": avg.p / len(dates_to_show),
+        "col_k": "", "k": avg.k / len(dates_to_show),
         "endc": bcolors.ENDC}
-    print(template_dates.format(**conf))
-    print("")
 
-    minmax = defaultdict(str)
-    minmax.update({
+    data.append((template_dates, conf))
+    data.append((None, {}))
+
+    min_ = defaultdict(str)
+    min_.update({
         "date": "Min",
         "line": bcolors.UNDERLINE,
-        "kcals": body_today["range"]["kcals"][0],
-        "f": body_today["range"]["f"][0],
-        "p": body_today["range"]["p"][0],
-        "k": body_today["range"]["k"][0]
+        "kcals": body_today.limits["kcals"][0],
+        "f": body_today.limits["f"][0],
+        "p": body_today.limits["p"][0],
+        "k": body_today.limits["k"][0]
     })
-    print(template_dates.format(**minmax))
 
-    minmax.update({
+    data.append((template_dates, min_))
+
+    max_ = defaultdict(str)
+    max_.update({
         "date": "Max",
-        "kcals": body_today["range"]["kcals"][1],
-        "f": body_today["range"]["f"][1],
-        "p": body_today["range"]["p"][1],
-        "k": body_today["range"]["k"][1]
+        "kcals": body_today.limits["kcals"][1],
+        "f": body_today.limits["f"][1],
+        "p": body_today.limits["p"][1],
+        "k": body_today.limits["k"][1]
     })
-    print(template_dates.format(**minmax))
+
+    data.append((template_dates, max_))
+    return data
 
 
-def test():
+def _get_output_string(data):
     """."""
-    body = {
-        "20160830": "20160830",
-        "20160827": "20160827",
-        "20160826": "20160826"}
+    output = []
 
-    # input, expected output
-    cases = (
-        [20160825, 20160826], [20160826, 20160826], [20160827, 20160827],
-        [20160828, 20160827], [20160829, 20160827], [20160830, 20160830],
-        [20160831, 20160830])
+    for tpl, vals in data:
+        if tpl:
+            output.append(tpl.format(**vals))
+        output.append("\n")
 
-    for inp, outp in cases:
-        print(outp, inp, "->", _get_bodystatus(body, str(inp)))
-        assert int(outp) == int(_get_bodystatus(body, str(inp)))
-
-    for inp, outp in cases:
-        print(outp, inp, "->", _get_bodystatus2(body, str(inp)))
-        assert int(outp) == int(_get_bodystatus2(body, str(inp)))
-
-
-if __name__ == '__main__':
-    test()
+    return "".join(output)
